@@ -11,6 +11,7 @@ using Abp.Configuration.Startup;
 using Abp.Dependency;
 using Abp.Reflection.Extensions;
 using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Abp.EntityFrameworkCore.Tests

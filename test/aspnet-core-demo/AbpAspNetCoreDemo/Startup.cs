@@ -63,10 +63,11 @@ namespace AbpAspNetCoreDemo
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             }).AddJsonOptions(options =>
             {
-                options.SerializerSettings.ContractResolver = new AbpMvcContractResolver(IocManager.Value)
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy()
-                };
+                // TODO 3.0: Uncomment below lines and find how to do it.
+                //options.SerializerSettings.ContractResolver = new AbpMvcContractResolver(IocManager.Value)
+                //{
+                //    NamingStrategy = new CamelCaseNamingStrategy()
+                //};
             });
 
             services.AddOData();
@@ -127,8 +128,9 @@ namespace AbpAspNetCoreDemo
                 options.Filter = httpContext => httpContext.Request.Path.Value.StartsWith("/odata");
             });
 
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            // TODO 3.0: uncomment below lines and find how to do it.
+            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            //loggerFactory.AddDebug();
 
             if (env.IsDevelopment())
             {

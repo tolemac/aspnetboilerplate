@@ -8,6 +8,7 @@ using System.Reflection;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Abp.EntityFrameworkCore
 {

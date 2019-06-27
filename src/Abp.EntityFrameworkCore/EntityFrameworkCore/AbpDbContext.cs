@@ -127,7 +127,7 @@ namespace Abp.EntityFrameworkCore
                 var filterExpression = CreateFilterExpression<TEntity>();
                 if (filterExpression != null)
                 {
-                    if (entityType.IsQueryType)
+                    if (entityType.IsKeyless)
                     {
                         modelBuilder.Query<TEntity>().HasQueryFilter(filterExpression);
                     }

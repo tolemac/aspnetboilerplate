@@ -41,7 +41,7 @@ namespace Abp.Zero.SampleApp.EntityFrameworkCore.Tests
             );
 
             var hostDbContextOptionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            hostDbContextOptionsBuilder.UseInMemoryDatabase().UseInternalServiceProvider(serviceProvider);
+            hostDbContextOptionsBuilder.UseInMemoryDatabase(nameof(DbContextOptionsBuilder<AppDbContext>)).UseInternalServiceProvider(serviceProvider);
 
             _hostDbContextOptions = hostDbContextOptionsBuilder.Options;
             _tenantDbContextOptions = new Dictionary<int, DbContextOptions<AppDbContext>>();
