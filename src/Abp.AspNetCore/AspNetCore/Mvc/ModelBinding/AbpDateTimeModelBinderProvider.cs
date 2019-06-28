@@ -1,11 +1,14 @@
 ﻿using System;
 using Abp.Timing;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Logging;
 
 namespace Abp.AspNetCore.Mvc.ModelBinding
 {
     public class AbpDateTimeModelBinderProvider : IModelBinderProvider
     {
+        public ILoggerFactory LoggerFactory { get; set; }
+
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
             if (context.Metadata.ModelType != typeof(DateTime) &&
@@ -26,7 +29,7 @@ namespace Abp.AspNetCore.Mvc.ModelBinding
 
             if (!dateNormalizationDisabledForClass && !dateNormalizationDisabledForProperty)
             {
-                return new AbpDateTimeModelBinder(context.Metadata.ModelType);
+                return new AbpDateTimeModelBinder(context.Metadata.ModelType, LoggerFactory);
             }
 
             return null;

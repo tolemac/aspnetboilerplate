@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Abp.Timing;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.Extensions.Logging;
 
 namespace Abp.AspNetCore.Mvc.ModelBinding
 {
@@ -11,12 +12,12 @@ namespace Abp.AspNetCore.Mvc.ModelBinding
         private readonly Type _type;
         private readonly SimpleTypeModelBinder _simpleTypeModelBinder;
 
-        public AbpDateTimeModelBinder(Type type)
+        public AbpDateTimeModelBinder(Type type, ILoggerFactory loggerFactory)
         {
             _type = type;
-            _simpleTypeModelBinder = new SimpleTypeModelBinder(type);
+            _simpleTypeModelBinder = new SimpleTypeModelBinder(type, loggerFactory);
         }
-        
+
         public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
             await _simpleTypeModelBinder.BindModelAsync(bindingContext);

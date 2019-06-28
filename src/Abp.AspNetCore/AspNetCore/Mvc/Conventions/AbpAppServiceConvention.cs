@@ -7,13 +7,13 @@ using Castle.Windsor.MsDependencyInjection;
 using Abp.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Reflection;
 using Abp.Collections.Extensions;
 using Abp.Web.Api.ProxyScripting.Generators;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Abp.AspNetCore.Mvc.Conventions
@@ -119,16 +119,17 @@ namespace Abp.AspNetCore.Mvc.Conventions
 
                 foreach (var actionConstraint in selector.ActionConstraints)
                 {
-                    var httpMethodActionConstraint = actionConstraint as HttpMethodActionConstraint;
-                    if (httpMethodActionConstraint == null)
-                    {
-                        continue;
-                    }
-
-                    if (httpMethodActionConstraint.HttpMethods.All(hm => hm.IsIn("GET", "DELETE", "TRACE", "HEAD")))
-                    {
-                        return false;
-                    }
+                    // TODO 3.0: uncomment below lines and find how to do it.
+                    //var httpMethodActionConstraint = actionConstraint as HttpMethodActionConstraint;
+                    //if (httpMethodActionConstraint == null)
+                    //{
+                    //    continue;
+                    //}
+                    
+                    //if (httpMethodActionConstraint.HttpMethods.All(hm => hm.IsIn("GET", "DELETE", "TRACE", "HEAD")))
+                    //{
+                    //    return false;
+                    //}
                 }
             }
 
@@ -226,7 +227,8 @@ namespace Abp.AspNetCore.Mvc.Conventions
                            ? ProxyScriptingHelper.GetConventionalVerbForMethodName(action.ActionName)
                            : ProxyScriptingHelper.DefaultHttpVerb;
 
-            abpServiceSelectorModel.ActionConstraints.Add(new HttpMethodActionConstraint(new[] { verb }));
+            // TODO 3.0: uncomment below lines and find how to do it.
+            //abpServiceSelectorModel.ActionConstraints.Add(new HttpMethodActionConstraint(new[] { verb }));
 
             action.Selectors.Add(abpServiceSelectorModel);
         }
