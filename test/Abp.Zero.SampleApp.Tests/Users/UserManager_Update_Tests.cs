@@ -1,4 +1,5 @@
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Abp.Zero.SampleApp.Users;
 using Microsoft.AspNet.Identity;
 using Shouldly;
@@ -16,7 +17,7 @@ namespace Abp.Zero.SampleApp.Tests.Users
             _userManager = Resolve<UserManager>();
             _unitOfWorkManager = Resolve<IUnitOfWorkManager>();
 
-            AbpSession.TenantId = 1; //Default tenant
+            AbpSession.TenantId = GuidExtensions.Guid1; //Default tenant
         }
 
         [Fact]

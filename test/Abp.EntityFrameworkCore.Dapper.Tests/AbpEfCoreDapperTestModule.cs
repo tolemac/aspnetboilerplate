@@ -29,10 +29,10 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests
 
             DapperExtensions.DapperExtensions.SqlDialect = new SqliteDialect();
             
-            Configuration.ReplaceService<IRepository<Post, Guid>>(() =>
+            Configuration.ReplaceService<IRepository<Post>>(() =>
             {
                 IocManager.IocContainer.Register(
-                    Component.For<IRepository<Post, Guid>, IPostRepository, PostRepository>()
+                    Component.For<IRepository<Post>, IPostRepository, PostRepository>()
                              .ImplementedBy<PostRepository>()
                              .LifestyleTransient()
                 );

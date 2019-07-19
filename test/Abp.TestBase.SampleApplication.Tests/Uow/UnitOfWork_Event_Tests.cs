@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Abp.TestBase.SampleApplication.People;
 using Shouldly;
 using Xunit;
@@ -30,7 +31,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Uow
 
             using (var uow = _unitOfWorkManager.Begin())
             {
-                _personRepository.Insert(new Person { ContactListId = 1, Name = "john" });
+                _personRepository.Insert(new Person { ContactListId = GuidExtensions.Guid1, Name = "john" });
 
                 _unitOfWorkManager.Current.Completed += (sender, args) =>
                                                         {

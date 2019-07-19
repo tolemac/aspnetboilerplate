@@ -191,7 +191,7 @@ namespace Abp.Zero.AspNetCore
         public virtual async Task<SignInStatus> TwoFactorSignInAsync(string provider, string code, bool isPersistent, bool rememberBrowser)
         {
             var userId = await GetVerifiedUserIdAsync();
-            if (userId <= 0)
+            if (userId == default)
             {
                 return SignInStatus.Failure;
             }
@@ -221,7 +221,7 @@ namespace Abp.Zero.AspNetCore
         public virtual async Task<bool> SendTwoFactorCodeAsync(string provider)
         {
             var userId = await GetVerifiedUserIdAsync();
-            if (userId <= 0)
+            if (userId != default)
             {
                 return false;
             }
@@ -231,19 +231,19 @@ namespace Abp.Zero.AspNetCore
             return identityResult == IdentityResult.Success;
         }
 
-        public async Task<long> GetVerifiedUserIdAsync()
+        public async Task<Guid> GetVerifiedUserIdAsync()
         {
             var authenticateResult = await AuthenticationManager.AuthenticateAsync(_configuration.TwoFactorAuthenticationScheme);
-            return Convert.ToInt64(IdentityExtensions.GetUserId(authenticateResult.Identity) ?? "0");
+            return Guid.TryParse(IdentityExtensions.GetUserId(authenticateResult.Identity), out var tenantId) ? tenantId : Guid.Empty;
         }
 
-        public virtual async Task<int?> GetVerifiedTenantIdAsync()
+        public virtual async Task<Guid?> GetVerifiedTenantIdAsync()
         {
             var authenticateResult = await AuthenticationManager.AuthenticateAsync(_configuration.TwoFactorAuthenticationScheme);
             return AbpZeroClaimsIdentityHelper.GetTenantId(authenticateResult?.Identity);
         }
 
-        public async Task<bool> TwoFactorBrowserRememberedAsync(string userId, int? tenantId)
+        public async Task<bool> TwoFactorBrowserRememberedAsync(string userId, Guid? tenantId)
         {
             var result = await AuthenticationManager.AuthenticateAsync(_configuration.TwoFactorRememberBrowserAuthenticationScheme);
             if (result?.Identity == null)
@@ -266,10 +266,10 @@ namespace Abp.Zero.AspNetCore
 
         public async Task<bool> HasBeenVerifiedAsync()
         {
-            return await GetVerifiedUserIdAsync() > 0;
+            return await GetVerifiedUserIdAsync() != default;
         }
 
-        private bool IsTrue(string settingName, int? tenantId)
+        private bool IsTrue(string settingName, Guid? tenantId)
         {
             return tenantId == null
                 ? _settingManager.GetSettingValueForApplication<bool>(settingName)

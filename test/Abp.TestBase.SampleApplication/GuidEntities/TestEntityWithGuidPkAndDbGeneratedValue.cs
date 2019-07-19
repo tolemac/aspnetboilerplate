@@ -4,7 +4,7 @@ using Abp.Domain.Entities;
 
 namespace Abp.TestBase.SampleApplication.GuidEntities
 {
-    public class TestEntityWithGuidPkAndDbGeneratedValue : Entity<Guid>
+    public class TestEntityWithGuidPkAndDbGeneratedValue : Entity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public override Guid Id { get; set; }

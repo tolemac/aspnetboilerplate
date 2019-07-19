@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Abp.Domain.Entities;
@@ -11,7 +12,7 @@ namespace Abp.MultiTenancy
     /// </summary>
     [Table("AbpTenants")]
     [MultiTenancySide(MultiTenancySides.Host)]
-    public abstract class AbpTenantBase : FullAuditedEntity<int>, IPassivable
+    public abstract class AbpTenantBase : FullAuditedEntity, IPassivable
     {
         /// <summary>
         /// Max length of the <see cref="TenancyName"/> property.
@@ -27,6 +28,8 @@ namespace Abp.MultiTenancy
         /// "Default".
         /// </summary>
         public const string DefaultTenantName = "Default";
+
+        public static readonly Guid DefaultTenantId = MultiTenancyConsts.DefaultTenantId;
 
         /// <summary>
         /// "^[a-zA-Z][a-zA-Z0-9_-]{1,}$".

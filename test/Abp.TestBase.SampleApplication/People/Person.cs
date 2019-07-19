@@ -18,11 +18,11 @@ namespace Abp.TestBase.SampleApplication.People
         [ForeignKey("ContactListId")]
         public virtual ContactList ContactList { get; set; }
 
-        public virtual int ContactListId { get; set; }
+        public virtual Guid ContactListId { get; set; }
 
         public virtual bool IsDeleted { get; set; }
 
-        public virtual long? DeleterUserId { get; set; }
+        public virtual Guid? DeleterUserId { get; set; }
 
         public virtual DateTime? DeletionTime { get; set; }
     }

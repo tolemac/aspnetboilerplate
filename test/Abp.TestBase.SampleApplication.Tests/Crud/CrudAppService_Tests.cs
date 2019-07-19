@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Authorization;
+using Abp.Extensions;
 using Abp.TestBase.SampleApplication.Crm;
 using NSubstitute;
 using NSubstitute.Extensions;
@@ -50,7 +51,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Crud
 
             Should.Throw<AbpAuthorizationException>(async () =>
             {
-                await _asyncCompanyAppService.Delete(new EntityDto(1));
+                await _asyncCompanyAppService.Delete(new EntityDto(GuidExtensions.Guid1));
             });
         }
 
@@ -59,7 +60,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Crud
         {
             //Act
 
-            await _asyncCompanyAppService.Delete(new EntityDto(1));
+            await _asyncCompanyAppService.Delete(new EntityDto(GuidExtensions.Guid1));
             (await _asyncCompanyAppService.GetAll(new PagedAndSortedResultRequestDto())).TotalCount.ShouldBe(1);
         }
 

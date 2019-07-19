@@ -16,7 +16,7 @@ namespace Abp.EntityFrameworkCore.Tests.Tests
         [Fact]
         public void Should_Resolve_Custom_Repository_If_Registered()
         {
-            var postRepository = Resolve<IRepository<Post, Guid>>();
+            var postRepository = Resolve<IRepository<Post>>();
 
             postRepository.GetAllList().Any().ShouldBeTrue();
 
@@ -33,7 +33,7 @@ namespace Abp.EntityFrameworkCore.Tests.Tests
         public void Should_Resolve_Default_Repositories_For_Second_DbContext()
         {
             var repo1 = Resolve<IRepository<Ticket>>();
-            var repo2 = Resolve<IRepository<Ticket, int>>();
+            var repo2 = Resolve<IRepository<Ticket, Guid>>();
 
             Assert.Throws<Exception>(
                 () => repo1.Count()
@@ -48,11 +48,11 @@ namespace Abp.EntityFrameworkCore.Tests.Tests
         public void Should_Resolve_Custom_Repositories_For_Second_DbContext()
         {
             var repo1 = Resolve<ISupportRepository<Ticket>>();
-            var repo2 = Resolve<ISupportRepository<Ticket, int>>();
+            var repo2 = Resolve<ISupportRepository<Ticket, Guid>>();
 
             typeof(ISupportRepository<Ticket>).GetTypeInfo().IsInstanceOfType(repo1).ShouldBeTrue();
-            typeof(ISupportRepository<Ticket, int>).GetTypeInfo().IsInstanceOfType(repo1).ShouldBeTrue();
-            typeof(ISupportRepository<Ticket, int>).GetTypeInfo().IsInstanceOfType(repo2).ShouldBeTrue();
+            typeof(ISupportRepository<Ticket, Guid>).GetTypeInfo().IsInstanceOfType(repo1).ShouldBeTrue();
+            typeof(ISupportRepository<Ticket, Guid>).GetTypeInfo().IsInstanceOfType(repo2).ShouldBeTrue();
 
             Assert.Throws<Exception>(
                 () => repo1.Count()

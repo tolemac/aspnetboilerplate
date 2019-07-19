@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 
 using Abp.Configuration.Startup;
+using Abp.Extensions;
 using Abp.TestBase;
 
 using Castle.MicroKernel.Registration;
@@ -22,8 +23,8 @@ namespace Abp.Dapper.Tests
 
             Resolve<IAbpStartupConfiguration>().DefaultNameOrConnectionString = "Data Source=:memory:";
 
-            AbpSession.UserId = 1;
-            AbpSession.TenantId = 1;
+            AbpSession.UserId = GuidExtensions.Guid1;
+            AbpSession.TenantId = GuidExtensions.Guid1;
         }
 
         protected override void PreInitialize()

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ namespace Abp.Configuration
         private readonly ISettingDefinitionManager _settingDefinitionManager;
         private readonly IMultiTenancyConfig _multiTenancyConfig;
         private readonly ITypedCache<string, Dictionary<string, SettingInfo>> _applicationSettingCache;
-        private readonly ITypedCache<int, Dictionary<string, SettingInfo>> _tenantSettingCache;
+        private readonly ITypedCache<Guid, Dictionary<string, SettingInfo>> _tenantSettingCache;
         private readonly ITypedCache<string, Dictionary<string, SettingInfo>> _userSettingCache;
         private readonly ITenantStore _tenantStore;
 
@@ -73,22 +74,22 @@ namespace Abp.Configuration
             return GetSettingValueInternalAsync(name, fallbackToDefault: fallbackToDefault);
         }
 
-        public Task<string> GetSettingValueForTenantAsync(string name, int tenantId)
+        public Task<string> GetSettingValueForTenantAsync(string name, Guid tenantId)
         {
             return GetSettingValueInternalAsync(name, tenantId);
         }
 
-        public Task<string> GetSettingValueForTenantAsync(string name, int tenantId, bool fallbackToDefault)
+        public Task<string> GetSettingValueForTenantAsync(string name, Guid tenantId, bool fallbackToDefault)
         {
             return GetSettingValueInternalAsync(name, tenantId, fallbackToDefault: fallbackToDefault);
         }
 
-        public Task<string> GetSettingValueForUserAsync(string name, int? tenantId, long userId)
+        public Task<string> GetSettingValueForUserAsync(string name, Guid? tenantId, Guid userId)
         {
             return GetSettingValueInternalAsync(name, tenantId, userId);
         }
 
-        public Task<string> GetSettingValueForUserAsync(string name, int? tenantId, long userId, bool fallbackToDefault)
+        public Task<string> GetSettingValueForUserAsync(string name, Guid? tenantId, Guid userId, bool fallbackToDefault)
         {
             return GetSettingValueInternalAsync(name, tenantId, userId, fallbackToDefault);
         }
@@ -189,7 +190,7 @@ namespace Abp.Configuration
         }
 
         /// <inheritdoc/>
-        public async Task<IReadOnlyList<ISettingValue>> GetAllSettingValuesForTenantAsync(int tenantId)
+        public async Task<IReadOnlyList<ISettingValue>> GetAllSettingValuesForTenantAsync(Guid tenantId)
         {
             return (await GetReadOnlyTenantSettings(tenantId)).Values
                 .Select(setting => new SettingValueObject(setting.Name, setting.Value))
@@ -197,7 +198,7 @@ namespace Abp.Configuration
         }
 
         /// <inheritdoc/>
-        public Task<IReadOnlyList<ISettingValue>> GetAllSettingValuesForUserAsync(long userId)
+        public Task<IReadOnlyList<ISettingValue>> GetAllSettingValuesForUserAsync(Guid userId)
         {
             return GetAllSettingValuesForUserAsync(new UserIdentifier(AbpSession.TenantId, userId));
         }
@@ -229,7 +230,7 @@ namespace Abp.Configuration
 
         /// <inheritdoc/>
         [UnitOfWork]
-        public virtual async Task ChangeSettingForTenantAsync(int tenantId, string name, string value)
+        public virtual async Task ChangeSettingForTenantAsync(Guid tenantId, string name, string value)
         {
             await InsertOrUpdateOrDeleteSettingValueAsync(name, value, tenantId, null);
             await _tenantSettingCache.RemoveAsync(tenantId);
@@ -237,7 +238,7 @@ namespace Abp.Configuration
 
         /// <inheritdoc/>
         [UnitOfWork]
-        public virtual Task ChangeSettingForUserAsync(long userId, string name, string value)
+        public virtual Task ChangeSettingForUserAsync(Guid userId, string name, string value)
         {
             return ChangeSettingForUserAsync(new UserIdentifier(AbpSession.TenantId, userId), name, value);
         }
@@ -252,7 +253,7 @@ namespace Abp.Configuration
 
         #region Private methods
 
-        private async Task<string> GetSettingValueInternalAsync(string name, int? tenantId = null, long? userId = null, bool fallbackToDefault = true)
+        private async Task<string> GetSettingValueInternalAsync(string name, Guid? tenantId = null, Guid? userId = null, bool fallbackToDefault = true)
         {
             var settingDefinition = _settingDefinitionManager.GetSettingDefinition(name);
 
@@ -315,7 +316,7 @@ namespace Abp.Configuration
             return settingDefinition.DefaultValue;
         }
 
-        private async Task<SettingInfo> InsertOrUpdateOrDeleteSettingValueAsync(string name, string value, int? tenantId, long? userId)
+        private async Task<SettingInfo> InsertOrUpdateOrDeleteSettingValueAsync(string name, string value, Guid? tenantId, Guid? userId)
         {
             var settingDefinition = _settingDefinitionManager.GetSettingDefinition(name);
             var settingValue = await SettingStore.GetSettingOrNullAsync(tenantId, userId, name);
@@ -395,7 +396,7 @@ namespace Abp.Configuration
             return (await GetReadOnlyTenantSettings(AbpSession.GetTenantId())).GetOrDefault(name);
         }
 
-        private async Task<SettingInfo> GetSettingValueForTenantOrNullAsync(int tenantId, string name)
+        private async Task<SettingInfo> GetSettingValueForTenantOrNullAsync(Guid tenantId, string name)
         {
             return (await GetReadOnlyTenantSettings(tenantId)).GetOrDefault(name);
         }
@@ -421,7 +422,7 @@ namespace Abp.Configuration
             });
         }
 
-        private async Task<ImmutableDictionary<string, SettingInfo>> GetReadOnlyTenantSettings(int tenantId)
+        private async Task<ImmutableDictionary<string, SettingInfo>> GetReadOnlyTenantSettings(Guid tenantId)
         {
             var cachedDictionary = await GetTenantSettingsFromCache(tenantId);
             lock (cachedDictionary)
@@ -439,7 +440,7 @@ namespace Abp.Configuration
             }
         }
 
-        private async Task<Dictionary<string, SettingInfo>> GetTenantSettingsFromCache(int tenantId)
+        private async Task<Dictionary<string, SettingInfo>> GetTenantSettingsFromCache(Guid tenantId)
         {
             return await _tenantSettingCache.GetAsync(
                 tenantId,

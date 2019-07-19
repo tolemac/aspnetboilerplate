@@ -48,12 +48,12 @@ namespace Abp.Authorization.Roles
 
         private readonly IRepository<TRole> _roleRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
-        private readonly IRepository<RolePermissionSetting, long> _rolePermissionSettingRepository;
+        private readonly IRepository<RolePermissionSetting> _rolePermissionSettingRepository;
 
         public AbpRoleStore(
             IUnitOfWorkManager unitOfWorkManager,
             IRepository<TRole> roleRepository, 
-            IRepository<RolePermissionSetting, long> rolePermissionSettingRepository)
+            IRepository<RolePermissionSetting> rolePermissionSettingRepository)
         {
             _unitOfWorkManager = unitOfWorkManager;
             _roleRepository = roleRepository;
@@ -210,7 +210,7 @@ namespace Abp.Authorization.Roles
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return _roleRepository.FirstOrDefaultAsync(id.To<int>());
+            return _roleRepository.FirstOrDefaultAsync(id.To<Guid>());
         }
 
         /// <summary>
@@ -361,7 +361,7 @@ namespace Abp.Authorization.Roles
             return GetPermissionsAsync(role.Id);
         }
 
-        public async Task<IList<PermissionGrantInfo>> GetPermissionsAsync(int roleId)
+        public async Task<IList<PermissionGrantInfo>> GetPermissionsAsync(Guid roleId)
         {
             return (await _rolePermissionSettingRepository.GetAllListAsync(p => p.RoleId == roleId))
                 .Select(p => new PermissionGrantInfo(p.Name, p.IsGranted))
@@ -369,7 +369,7 @@ namespace Abp.Authorization.Roles
         }
 
         /// <inheritdoc/>
-        public virtual async Task<bool> HasPermissionAsync(int roleId, PermissionGrantInfo permissionGrant)
+        public virtual async Task<bool> HasPermissionAsync(Guid roleId, PermissionGrantInfo permissionGrant)
         {
             return await _rolePermissionSettingRepository.FirstOrDefaultAsync(
                 p => p.RoleId == roleId &&

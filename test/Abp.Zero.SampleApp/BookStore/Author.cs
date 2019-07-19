@@ -4,7 +4,7 @@ using Abp.Domain.Entities;
 
 namespace Abp.Zero.SampleApp.BookStore
 {
-    public class Author : Entity<Guid>
+    public class Author : Entity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public override Guid Id { get; set; }

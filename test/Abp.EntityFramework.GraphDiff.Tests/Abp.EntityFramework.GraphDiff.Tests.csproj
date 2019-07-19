@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
     <AssemblyName>Abp.EntityFramework.GraphDiff.Tests</AssemblyName>
-    <PackageId>Abp.EntityFramework.GraphDiff.Tests</PackageId>
+    <PackageId>Abp-Guid.EntityFramework.GraphDiff.Tests</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>

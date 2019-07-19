@@ -29,10 +29,10 @@ namespace Abp.EntityFrameworkCore.Tests
             RegisterSupportDbContextToSqliteInMemoryDb(IocManager);
             
             //Custom repository
-            Configuration.ReplaceService<IRepository<Post, Guid>>(() =>
+            Configuration.ReplaceService<IRepository<Post>>(() =>
             {
                 IocManager.IocContainer.Register(
-                    Component.For<IRepository<Post, Guid>, IPostRepository, PostRepository>()
+                    Component.For<IRepository<Post>, IPostRepository, PostRepository>()
                         .ImplementedBy<PostRepository>()
                         .LifestyleTransient()
                 );

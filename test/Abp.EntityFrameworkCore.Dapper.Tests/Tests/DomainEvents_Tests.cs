@@ -14,6 +14,7 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests.Tests
 {
     public class DomainEvents_Tests : AbpEfCoreDapperTestApplicationBase
     {
+        private readonly IDapperRepository<Post> _postDapperRepository;
         private readonly IDapperRepository<Blog> _blogDapperRepository;
         private readonly IRepository<Blog> _blogRepository;
         private readonly IEventBus _eventBus;
@@ -22,6 +23,7 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests.Tests
         {
             _blogRepository = Resolve<IRepository<Blog>>();
             _blogDapperRepository = Resolve<IDapperRepository<Blog>>();
+            _postDapperRepository = Resolve<IDapperRepository<Post>>();
             _eventBus = Resolve<IEventBus>();
         }
 
@@ -43,9 +45,11 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests.Tests
             Blog blog1 = _blogRepository.Single(b => b.Name == "test-blog-1");
             blog1.ChangeUrl("http://testblog1-changed.myblogs.com");
             _blogRepository.Update(blog1);
-            
+
 
             //Assert
+            var a = _postDapperRepository.FirstOrDefault(p => p.Title != null);
+            a.ShouldNotBeNull();
             _blogDapperRepository.Get(blog1.Id).ShouldNotBeNull();
             isTriggered.ShouldBeTrue();
         }

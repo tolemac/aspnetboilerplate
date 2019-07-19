@@ -23,7 +23,7 @@ namespace Abp.Zero.EntityHistory
     public class SimpleEntityHistory_Test : AbpZeroTestBase
     {
         private readonly IRepository<Blog> _blogRepository;
-        private readonly IRepository<Post, Guid> _postRepository;
+        private readonly IRepository<Post> _postRepository;
         private readonly IRepository<Comment> _commentRepository;
 
         private IEntityHistoryStore _entityHistoryStore;
@@ -31,7 +31,7 @@ namespace Abp.Zero.EntityHistory
         public SimpleEntityHistory_Test()
         {
             _blogRepository = Resolve<IRepository<Blog>>();
-            _postRepository = Resolve<IRepository<Post, Guid>>();
+            _postRepository = Resolve<IRepository<Post>>();
             _commentRepository = Resolve<IRepository<Comment>>();
 
             Resolve<IEntityHistoryConfiguration>().IsEnabledForAnonymousUsers = true;
@@ -86,7 +86,7 @@ namespace Abp.Zero.EntityHistory
                     entityHistoryStore.SaveAsync(callback.Arg<EntityChangeSet>()))
                 );
 
-            const int tenantId = 1;
+            var tenantId = GuidExtensions.Guid1;
 
             UsingDbContext(tenantId, (context) =>
             {
@@ -149,7 +149,7 @@ namespace Abp.Zero.EntityHistory
         {
             /* Blog has Audited attribute. */
 
-            int blog1Id;
+            Guid blog1Id;
             var newValue = "blogger-2";
             string originalValue;
 
@@ -198,8 +198,8 @@ namespace Abp.Zero.EntityHistory
 
             using (var uow = Resolve<IUnitOfWorkManager>().Begin())
             {
-                var blog1 = _blogRepository.Single(b => b.Id == 1);
-                var blog2 = _blogRepository.Single(b => b.Id == 2);
+                var blog1 = _blogRepository.Single(b => b.Id == GuidExtensions.Guid1);
+                var blog2 = _blogRepository.Single(b => b.Id == blogId);
                 var post1 = _postRepository.Single(b => b.Body == "test-post-1-body");
                 post1Id = post1.Id;
 
@@ -210,13 +210,16 @@ namespace Abp.Zero.EntityHistory
                 uow.Complete();
             }
 
-            _entityHistoryStore.Received().SaveAsync(Arg.Is<EntityChangeSet>(
-                s => s.EntityChanges.Count == 1 &&
-                     s.EntityChanges[0].ChangeType == EntityChangeType.Updated &&
-                     s.EntityChanges[0].EntityId == post1Id.ToJsonString(false, false) &&
-                     s.EntityChanges[0].EntityTypeFullName == typeof(Post).FullName &&
-                     s.EntityChanges[0].PropertyChanges.Count == 1 // Post.BlogId
-            ));
+            Predicate<EntityChangeSet> predicate = s =>
+            {
+                return s.EntityChanges.Count == 1 &&
+                      s.EntityChanges[0].ChangeType == EntityChangeType.Updated &&
+                      s.EntityChanges[0].EntityId == post1Id.ToJsonString(false, false) &&
+                      s.EntityChanges[0].EntityTypeFullName == typeof(Post).FullName &&
+                      s.EntityChanges[0].PropertyChanges.Count == 1;
+            };
+
+            _entityHistoryStore.Received().SaveAsync(Arg.Is<EntityChangeSet>(s => predicate(s)));
         }
 
         [Fact]
@@ -304,9 +307,9 @@ namespace Abp.Zero.EntityHistory
 
         #endregion
 
-        private int CreateBlogAndGetId()
+        private Guid CreateBlogAndGetId()
         {
-            int blog2Id;
+            Guid blog2Id;
 
             using (var uow = Resolve<IUnitOfWorkManager>().Begin())
             {

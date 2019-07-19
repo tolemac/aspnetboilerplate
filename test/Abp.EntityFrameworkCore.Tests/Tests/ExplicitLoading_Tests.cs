@@ -11,12 +11,12 @@ namespace Abp.EntityFrameworkCore.Tests.Tests
     public class ExplicitLoading_Tests : EntityFrameworkCoreModuleTestBase
     {
         private readonly IRepository<Blog> _blogRepository;
-        private readonly IRepository<Post, Guid> _postRepository;
+        private readonly IRepository<Post> _postRepository;
 
         public ExplicitLoading_Tests()
         {
             _blogRepository = Resolve<IRepository<Blog>>();
-            _postRepository = Resolve<IRepository<Post, Guid>>();
+            _postRepository = Resolve<IRepository<Post>>();
         }
 
         [Fact]

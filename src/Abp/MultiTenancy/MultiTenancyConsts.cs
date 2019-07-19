@@ -1,3 +1,6 @@
+using Abp.Extensions;
+using System;
+
 namespace Abp.MultiTenancy
 {
     public static class MultiTenancyConsts
@@ -5,6 +8,6 @@ namespace Abp.MultiTenancy
         /// <summary>
         /// Default tenant id: 1.
         /// </summary>
-        public const int DefaultTenantId = 1;
+        public static readonly Guid DefaultTenantId = GuidExtensions.Guid1;
     }
 }

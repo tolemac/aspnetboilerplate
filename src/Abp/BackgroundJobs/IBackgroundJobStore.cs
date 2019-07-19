@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,7 +14,7 @@ namespace Abp.BackgroundJobs
         /// </summary>
         /// <param name="jobId">The Job Unique Identifier.</param>
         /// <returns>The BackgroundJobInfo object.</returns>
-        Task<BackgroundJobInfo> GetAsync(long jobId);
+        Task<BackgroundJobInfo> GetAsync(Guid jobId);
 
         /// <summary>
         /// Inserts a background job.

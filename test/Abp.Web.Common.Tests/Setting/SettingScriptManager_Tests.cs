@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Abp.Configuration;
+using Abp.Extensions;
 using Abp.Runtime.Session;
 using Abp.TestBase;
 using Abp.Web.Http;
@@ -65,8 +66,8 @@ namespace Abp.Web.Common.Tests.Setting
 
         private void LoginAsDefaultTenantAdmin()
         {
-            AbpSession.UserId = 2;
-            AbpSession.TenantId = 1;
+            AbpSession.UserId = GuidExtensions.Guid2;
+            AbpSession.TenantId = GuidExtensions.Guid1;
         }
     }
 }

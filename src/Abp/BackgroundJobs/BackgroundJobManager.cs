@@ -76,9 +76,9 @@ namespace Abp.BackgroundJobs
 
         public async Task<bool> DeleteAsync(string jobId)
         {
-            if (long.TryParse(jobId, out long finalJobId) == false)
+            if (Guid.TryParse(jobId, out Guid finalJobId) == false)
             {
-                throw new ArgumentException($"The jobId '{jobId}' should be a number.", nameof(jobId));
+                throw new ArgumentException($"The jobId '{jobId}' should be a Guid.", nameof(jobId));
             }
 
             BackgroundJobInfo jobInfo = await _store.GetAsync(finalJobId);

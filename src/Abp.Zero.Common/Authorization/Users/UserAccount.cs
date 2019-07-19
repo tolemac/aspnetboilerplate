@@ -11,7 +11,7 @@ namespace Abp.Authorization.Users
     /// </summary>
     [Table("AbpUserAccounts")]
     [MultiTenancySide(MultiTenancySides.Host)]
-    public class UserAccount : FullAuditedEntity<long>
+    public class UserAccount : FullAuditedEntity
     {
         /// <summary>
         /// Maximum length of the <see cref="UserName"/> property.
@@ -23,9 +23,9 @@ namespace Abp.Authorization.Users
         /// </summary>
         public const int MaxEmailAddressLength = 256;
 
-        public virtual int? TenantId { get; set; }
+        public virtual Guid? TenantId { get; set; }
 
-        public virtual long UserId { get; set; }
+        public virtual Guid UserId { get; set; }
 
         public virtual long? UserLinkId { get; set; }
 

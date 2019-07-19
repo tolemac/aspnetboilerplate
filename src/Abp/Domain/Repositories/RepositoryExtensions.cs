@@ -140,7 +140,7 @@ namespace Abp.Domain.Repositories
             }
         }
 
-        private static int? GetCurrentTenantIdOrNull(IIocResolver iocResolver)
+        private static Guid? GetCurrentTenantIdOrNull(IIocResolver iocResolver)
         {
             using (var scope = iocResolver.CreateScope())
             {

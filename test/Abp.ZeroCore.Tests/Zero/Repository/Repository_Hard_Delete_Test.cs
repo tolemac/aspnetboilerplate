@@ -76,7 +76,7 @@ namespace Abp.Zero.Repository
 
             using (var uow = uowManager.Begin())
             {
-                await _roleRepository.HardDeleteAsync(r => r.Id > 0);
+                await _roleRepository.HardDeleteAsync(r => r.Id != default);
 
                 uow.Complete();
             }

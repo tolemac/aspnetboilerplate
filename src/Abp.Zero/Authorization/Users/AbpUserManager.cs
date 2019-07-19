@@ -28,7 +28,7 @@ namespace Abp.Authorization.Users
     /// Extends <see cref="UserManager{TUser,TKey}"/> of ASP.NET Identity Framework.
     /// </summary>
     public abstract class AbpUserManager<TRole, TUser>
-        : UserManager<TUser, long>,
+        : UserManager<TUser, Guid>,
         IDomainService
         where TRole : AbpRole<TUser>, new()
         where TUser : AbpUser<TUser>
@@ -63,8 +63,8 @@ namespace Abp.Authorization.Users
         private readonly IPermissionManager _permissionManager;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly ICacheManager _cacheManager;
-        private readonly IRepository<OrganizationUnit, long> _organizationUnitRepository;
-        private readonly IRepository<UserOrganizationUnit, long> _userOrganizationUnitRepository;
+        private readonly IRepository<OrganizationUnit> _organizationUnitRepository;
+        private readonly IRepository<UserOrganizationUnit> _userOrganizationUnitRepository;
         private readonly IOrganizationUnitSettings _organizationUnitSettings;
         private readonly ISettingManager _settingManager;
 
@@ -74,8 +74,8 @@ namespace Abp.Authorization.Users
             IPermissionManager permissionManager,
             IUnitOfWorkManager unitOfWorkManager,
             ICacheManager cacheManager,
-            IRepository<OrganizationUnit, long> organizationUnitRepository,
-            IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository,
+            IRepository<OrganizationUnit> organizationUnitRepository,
+            IRepository<UserOrganizationUnit> userOrganizationUnitRepository,
             IOrganizationUnitSettings organizationUnitSettings,
             ILocalizationManager localizationManager,
             IdentityEmailMessageService emailService,
@@ -133,7 +133,7 @@ namespace Abp.Authorization.Users
         /// </summary>
         /// <param name="userId">User id</param>
         /// <param name="permissionName">Permission name</param>
-        public virtual async Task<bool> IsGrantedAsync(long userId, string permissionName)
+        public virtual async Task<bool> IsGrantedAsync(Guid userId, string permissionName)
         {
             return await IsGrantedAsync(
                 userId,
@@ -156,7 +156,7 @@ namespace Abp.Authorization.Users
         /// </summary>
         /// <param name="userId">User id</param>
         /// <param name="permission">Permission</param>
-        public virtual async Task<bool> IsGrantedAsync(long userId, Permission permission)
+        public virtual async Task<bool> IsGrantedAsync(Guid userId, Permission permission)
         {
             //Check for multi-tenancy side
             if (!permission.MultiTenancySides.HasFlag(GetCurrentMultiTenancySide()))
@@ -323,7 +323,7 @@ namespace Abp.Authorization.Users
         /// <param name="userId">User id</param>
         /// <returns>User</returns>
         /// <exception cref="AbpException">Throws exception if no user found with given id</exception>
-        public virtual async Task<TUser> GetUserByIdAsync(long userId)
+        public virtual async Task<TUser> GetUserByIdAsync(Guid userId)
         {
             var user = await FindByIdAsync(userId);
             if (user == null)
@@ -339,7 +339,7 @@ namespace Abp.Authorization.Users
             var identity = await base.CreateIdentityAsync(user, authenticationType);
             if (user.TenantId.HasValue)
             {
-                identity.AddClaim(new Claim(AbpClaimTypes.TenantId, user.TenantId.Value.ToString(CultureInfo.InvariantCulture)));
+                identity.AddClaim(new Claim(AbpClaimTypes.TenantId, user.TenantId.Value.ToString()));
             }
 
             return identity;
@@ -389,7 +389,7 @@ namespace Abp.Authorization.Users
             return IdentityResult.Success;
         }
 
-        public virtual async Task<IdentityResult> CheckDuplicateUsernameOrEmailAddressAsync(long? expectedUserId, string userName, string emailAddress)
+        public virtual async Task<IdentityResult> CheckDuplicateUsernameOrEmailAddressAsync(Guid? expectedUserId, string userName, string emailAddress)
         {
             var user = (await FindByNameAsync(userName));
             if (user != null && user.Id != expectedUserId)
@@ -439,7 +439,7 @@ namespace Abp.Authorization.Users
             return IdentityResult.Success;
         }
 
-        public virtual async Task<bool> IsInOrganizationUnitAsync(long userId, long ouId)
+        public virtual async Task<bool> IsInOrganizationUnitAsync(Guid userId, Guid ouId)
         {
             return await IsInOrganizationUnitAsync(
                 await GetUserByIdAsync(userId),
@@ -454,7 +454,7 @@ namespace Abp.Authorization.Users
                 ) > 0;
         }
 
-        public virtual async Task AddToOrganizationUnitAsync(long userId, long ouId)
+        public virtual async Task AddToOrganizationUnitAsync(Guid userId, Guid ouId)
         {
             await AddToOrganizationUnitAsync(
                 await GetUserByIdAsync(userId),
@@ -476,7 +476,7 @@ namespace Abp.Authorization.Users
             await _userOrganizationUnitRepository.InsertAsync(new UserOrganizationUnit(user.TenantId, user.Id, ou.Id));
         }
 
-        public virtual async Task RemoveFromOrganizationUnitAsync(long userId, long ouId)
+        public virtual async Task RemoveFromOrganizationUnitAsync(Guid userId, Guid ouId)
         {
             await RemoveFromOrganizationUnitAsync(
                 await GetUserByIdAsync(userId),
@@ -489,7 +489,7 @@ namespace Abp.Authorization.Users
             await _userOrganizationUnitRepository.DeleteAsync(uou => uou.UserId == user.Id && uou.OrganizationUnitId == ou.Id);
         }
 
-        public virtual async Task SetOrganizationUnitsAsync(long userId, params long[] organizationUnitIds)
+        public virtual async Task SetOrganizationUnitsAsync(Guid userId, params Guid[] organizationUnitIds)
         {
             await SetOrganizationUnitsAsync(
                 await GetUserByIdAsync(userId),
@@ -497,7 +497,7 @@ namespace Abp.Authorization.Users
                 );
         }
 
-        private async Task CheckMaxUserOrganizationUnitMembershipCountAsync(int? tenantId, int requestedCount)
+        private async Task CheckMaxUserOrganizationUnitMembershipCountAsync(Guid? tenantId, int requestedCount)
         {
             var maxCount = await _organizationUnitSettings.GetMaxUserMembershipCountAsync(tenantId);
             if (requestedCount > maxCount)
@@ -506,11 +506,11 @@ namespace Abp.Authorization.Users
             }
         }
 
-        public virtual async Task SetOrganizationUnitsAsync(TUser user, params long[] organizationUnitIds)
+        public virtual async Task SetOrganizationUnitsAsync(TUser user, params Guid[] organizationUnitIds)
         {
             if (organizationUnitIds == null)
             {
-                organizationUnitIds = new long[0];
+                organizationUnitIds = new Guid[0];
             }
 
             await CheckMaxUserOrganizationUnitMembershipCountAsync(user.TenantId, organizationUnitIds.Length);
@@ -574,7 +574,7 @@ namespace Abp.Authorization.Users
             }
         }
 
-        public virtual void RegisterTwoFactorProviders(int? tenantId)
+        public virtual void RegisterTwoFactorProviders(Guid? tenantId)
         {
             TwoFactorProviders.Clear();
 
@@ -588,7 +588,7 @@ namespace Abp.Authorization.Users
             {
                 RegisterTwoFactorProvider(
                     L("Email"),
-                    new EmailTokenProvider<TUser, long>
+                    new EmailTokenProvider<TUser, Guid>
                     {
                         Subject = L("EmailSecurityCodeSubject"),
                         BodyFormat = L("EmailSecurityCodeBody")
@@ -601,7 +601,7 @@ namespace Abp.Authorization.Users
             {
                 RegisterTwoFactorProvider(
                     L("Sms"),
-                    new PhoneNumberTokenProvider<TUser, long>
+                    new PhoneNumberTokenProvider<TUser, Guid>
                     {
                         MessageFormat = L("SmsSecurityCodeMessage")
                     }
@@ -609,14 +609,14 @@ namespace Abp.Authorization.Users
             }
         }
 
-        public virtual void InitializeLockoutSettings(int? tenantId)
+        public virtual void InitializeLockoutSettings(Guid? tenantId)
         {
             UserLockoutEnabledByDefault = IsTrue(AbpZeroSettingNames.UserManagement.UserLockOut.IsEnabled, tenantId);
             DefaultAccountLockoutTimeSpan = TimeSpan.FromSeconds(GetSettingValue<int>(AbpZeroSettingNames.UserManagement.UserLockOut.DefaultAccountLockoutSeconds, tenantId));
             MaxFailedAccessAttemptsBeforeLockout = GetSettingValue<int>(AbpZeroSettingNames.UserManagement.UserLockOut.MaxFailedAccessAttemptsBeforeLockout, tenantId);
         }
 
-        public override async Task<IList<string>> GetValidTwoFactorProvidersAsync(long userId)
+        public override async Task<IList<string>> GetValidTwoFactorProvidersAsync(Guid userId)
         {
             var user = await GetUserByIdAsync(userId);
 
@@ -625,7 +625,7 @@ namespace Abp.Authorization.Users
             return await base.GetValidTwoFactorProvidersAsync(userId);
         }
 
-        public override async Task<IdentityResult> NotifyTwoFactorTokenAsync(long userId, string twoFactorProvider, string token)
+        public override async Task<IdentityResult> NotifyTwoFactorTokenAsync(Guid userId, string twoFactorProvider, string token)
         {
             var user = await GetUserByIdAsync(userId);
 
@@ -634,7 +634,7 @@ namespace Abp.Authorization.Users
             return await base.NotifyTwoFactorTokenAsync(userId, twoFactorProvider, token);
         }
 
-        public override async Task<string> GenerateTwoFactorTokenAsync(long userId, string twoFactorProvider)
+        public override async Task<string> GenerateTwoFactorTokenAsync(Guid userId, string twoFactorProvider)
         {
             var user = await GetUserByIdAsync(userId);
 
@@ -643,7 +643,7 @@ namespace Abp.Authorization.Users
             return await base.GenerateTwoFactorTokenAsync(userId, twoFactorProvider);
         }
 
-        public override async Task<bool> VerifyTwoFactorTokenAsync(long userId, string twoFactorProvider, string token)
+        public override async Task<bool> VerifyTwoFactorTokenAsync(Guid userId, string twoFactorProvider, string token)
         {
             var user = await GetUserByIdAsync(userId);
 
@@ -652,14 +652,14 @@ namespace Abp.Authorization.Users
             return await base.VerifyTwoFactorTokenAsync(userId, twoFactorProvider, token);
         }
 
-        protected virtual Task<string> GetOldUserNameAsync(long userId)
+        protected virtual Task<string> GetOldUserNameAsync(Guid userId)
         {
             return AbpStore.GetUserNameFromDatabaseAsync(userId);
         }
 
-        private async Task<UserPermissionCacheItem> GetUserPermissionCacheItemAsync(long userId)
+        private async Task<UserPermissionCacheItem> GetUserPermissionCacheItemAsync(Guid userId)
         {
-            var cacheKey = userId + "@" + (GetCurrentTenantId() ?? 0);
+            var cacheKey = userId + "@" + (GetCurrentTenantId() ?? default);
             return await _cacheManager.GetUserPermissionCache().GetAsync(cacheKey, async () =>
             {
                 var user = await FindByIdAsync(userId);
@@ -691,12 +691,12 @@ namespace Abp.Authorization.Users
             });
         }
 
-        private bool IsTrue(string settingName, int? tenantId)
+        private bool IsTrue(string settingName, Guid? tenantId)
         {
             return GetSettingValue<bool>(settingName, tenantId);
         }
 
-        private T GetSettingValue<T>(string settingName, int? tenantId) where T : struct
+        private T GetSettingValue<T>(string settingName, Guid? tenantId) where T : struct
         {
             return tenantId == null
                 ? _settingManager.GetSettingValueForApplication<T>(settingName)
@@ -713,7 +713,7 @@ namespace Abp.Authorization.Users
             return LocalizationManager.GetString(LocalizationSourceName, name, cultureInfo);
         }
 
-        private int? GetCurrentTenantId()
+        private Guid? GetCurrentTenantId()
         {
             if (_unitOfWorkManager.Current != null)
             {

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Abp.Application.Editions;
 using Abp.Application.Features;
@@ -30,13 +31,13 @@ namespace Abp.ZeroCore.SampleApp.EntityFramework.Seed.Host
                 _context.SaveChanges();
             }
 
-            if (defaultEdition.Id > 0)
+            if (defaultEdition.Id != default)
             {
                 CreateFeatureIfNotExists(defaultEdition.Id, AppFeatures.SimpleBooleanFeature, true);
             }
         }
 
-        private void CreateFeatureIfNotExists(int editionId, string featureName, bool isEnabled)
+        private void CreateFeatureIfNotExists(Guid editionId, string featureName, bool isEnabled)
         {
             var defaultEditionChatFeature = _context.EditionFeatureSettings
                                                         .FirstOrDefault(ef => ef.EditionId == editionId && ef.Name == featureName);

@@ -9,7 +9,7 @@ namespace Abp.TestBase.SampleApplication.Crm
     [Table("Rooms")]
     public class Room : Entity, IHasCreationTime
     {
-        public int HotelId { get; set; }
+        public Guid HotelId { get; set; }
 
         public string Name { get; set; }
 

@@ -4,7 +4,7 @@
     <VersionPrefix>1.5.0.0</VersionPrefix>
     <TargetFramework>net461</TargetFramework>
     <AssemblyName>Abp.Zero.SampleApp.EntityFramework</AssemblyName>
-    <PackageId>Abp.Zero.SampleApp.EntityFramework</PackageId>
+    <PackageId>Abp-Guid.Zero.SampleApp.EntityFramework</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>

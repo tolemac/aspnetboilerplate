@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Abp.Zero.SampleApp.Users;
 using Microsoft.AspNet.Identity;
@@ -13,12 +14,12 @@ namespace Abp.Zero.SampleApp.EntityFrameworkCore.TestDataBuilders.TenantDatas
             _context = context;
         }
 
-        public void Build(int tenantId)
+        public void Build(Guid tenantId)
         {
             CreateUsers(tenantId);
         }
 
-        private void CreateUsers(int tenantId)
+        private void CreateUsers(Guid tenantId)
         {
             var adminUser = _context.Users.FirstOrDefault(u => u.TenantId == tenantId && u.UserName == User.AdminUserName);
 

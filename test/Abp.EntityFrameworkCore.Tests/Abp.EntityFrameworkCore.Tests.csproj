@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net461;netcoreapp2.2</TargetFrameworks>
     <AssemblyName>Abp.EntityFrameworkCore.Tests</AssemblyName>
-    <PackageId>Abp.EntityFrameworkCore.Tests</PackageId>
+    <PackageId>Abp-Guid.EntityFrameworkCore.Tests</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>

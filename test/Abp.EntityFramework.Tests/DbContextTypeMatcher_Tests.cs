@@ -2,17 +2,19 @@
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.EntityFramework.Repositories;
+using Abp.Extensions;
 using Abp.MultiTenancy;
 using Abp.Tests;
 using NSubstitute;
 using Shouldly;
+using System;
 using Xunit;
 
 namespace Abp.EntityFramework.Tests
 {
     public class DbContextTypeMatcher_Tests : TestBaseWithLocalIocManager
     {
-        private int? _tenantId = 1;
+        private Guid? _tenantId = GuidExtensions.Guid1;
 
         private readonly DbContextTypeMatcher matcher;
 

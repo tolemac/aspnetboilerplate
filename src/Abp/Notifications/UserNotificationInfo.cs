@@ -12,17 +12,17 @@ namespace Abp.Notifications
     /// </summary>
     [Serializable]
     [Table("AbpUserNotifications")]
-    public class UserNotificationInfo : Entity<Guid>, IHasCreationTime, IMayHaveTenant
+    public class UserNotificationInfo : Entity, IHasCreationTime, IMayHaveTenant
     {
         /// <summary>
         /// Tenant Id.
         /// </summary>
-        public virtual int? TenantId { get; set; }
+        public virtual Guid? TenantId { get; set; }
 
         /// <summary>
         /// User Id.
         /// </summary>
-        public virtual long UserId { get; set; }
+        public virtual Guid UserId { get; set; }
 
         /// <summary>
         /// Notification Id.

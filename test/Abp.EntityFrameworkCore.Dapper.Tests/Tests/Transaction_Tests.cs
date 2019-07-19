@@ -7,7 +7,7 @@ using Abp.Domain.Uow;
 using Abp.EntityFrameworkCore.Dapper.Tests.Domain;
 using Abp.Events.Bus;
 using Abp.Events.Bus.Entities;
-
+using Abp.Extensions;
 using Shouldly;
 
 using Xunit;
@@ -67,7 +67,7 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests.Tests
             {
                 using (IUnitOfWorkCompleteHandle uow = Resolve<IUnitOfWorkManager>().Begin())
                 {
-                    int blogId = _blogDapperRepository.InsertAndGetId(new Blog("Oguzhan_Same_Uow", "www.oguzhansoykan.com"));
+                    Guid blogId = _blogDapperRepository.InsertAndGetId(new Blog("Oguzhan_Same_Uow", "www.oguzhansoykan.com"));
 
                     Blog person = _blogRepository.Get(blogId);
 
@@ -95,7 +95,7 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests.Tests
                     eventData.Entity.Name.ShouldBe("Oguzhan_Same_Uow");
                 });
 
-            int blogId = 0;
+            Guid blogId = GuidExtensions.Guid1;
             using (IUnitOfWorkCompleteHandle uow = Resolve<IUnitOfWorkManager>().Begin())
             {
                 blogId = _blogDapperRepository.InsertAndGetId(new Blog("Oguzhan_Same_Uow", "www.aspnetboilerplate.com"));

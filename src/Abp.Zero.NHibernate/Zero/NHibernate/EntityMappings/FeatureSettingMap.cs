@@ -3,7 +3,7 @@ using Abp.NHibernate.EntityMappings;
 
 namespace Abp.Zero.NHibernate.EntityMappings
 {
-    public class FeatureSettingMap : EntityMap<FeatureSetting, long>
+    public class FeatureSettingMap : EntityMap<FeatureSetting>
     {
         public FeatureSettingMap()
             : base("AbpFeatures")

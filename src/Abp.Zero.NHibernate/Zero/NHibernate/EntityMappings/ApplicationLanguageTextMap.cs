@@ -3,7 +3,7 @@ using Abp.NHibernate.EntityMappings;
 
 namespace Abp.Zero.NHibernate.EntityMappings
 {
-    public class ApplicationLanguageTextMap : EntityMap<ApplicationLanguageText, long>
+    public class ApplicationLanguageTextMap : EntityMap<ApplicationLanguageText>
     {
         public ApplicationLanguageTextMap()
             : base("AbpLanguageTexts")

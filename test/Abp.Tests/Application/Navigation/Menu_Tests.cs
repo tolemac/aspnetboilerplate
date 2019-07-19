@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Navigation;
+using Abp.Extensions;
 using Shouldly;
 using Xunit;
 
@@ -22,7 +23,7 @@ namespace Abp.Tests.Application.Navigation
             adminMenuItemDefinition.Items.Count.ShouldBe(3);
             
             //Check user menus
-            var userMenu = await testCase.UserNavigationManager.GetMenuAsync(mainMenuDefinition.Name, new UserIdentifier(1, 1));
+            var userMenu = await testCase.UserNavigationManager.GetMenuAsync(mainMenuDefinition.Name, new UserIdentifier(GuidExtensions.Guid1, GuidExtensions.Guid1));
             userMenu.Items.Count.ShouldBe(1);
 
             var userAdminMenu = userMenu.Items.FirstOrDefault(i => i.Name == "Abp.Zero.Administration");

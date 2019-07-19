@@ -5,6 +5,7 @@ using Abp.Domain.Entities;
 using Abp.Localization;
 using AutoMapper;
 using System.Linq;
+using System;
 
 namespace Abp.AutoMapper
 {
@@ -73,10 +74,10 @@ namespace Abp.AutoMapper
         }
 
         public static CreateMultiLingualMapResult<TMultiLingualEntity, TTranslation, TDestination> CreateMultiLingualMap<TMultiLingualEntity, TTranslation, TDestination>(this IMapperConfigurationExpression configuration, MultiLingualMapContext multiLingualMapContext)
-            where TTranslation : class, IEntity, IEntityTranslation<TMultiLingualEntity, int>
+            where TTranslation : class, IEntity, IEntityTranslation<TMultiLingualEntity, Guid>
             where TMultiLingualEntity : IMultiLingualEntity<TTranslation>
         {
-            return configuration.CreateMultiLingualMap<TMultiLingualEntity, int, TTranslation, TDestination>(multiLingualMapContext);
+            return configuration.CreateMultiLingualMap<TMultiLingualEntity, Guid, TTranslation, TDestination>(multiLingualMapContext);
         }
     }
 }

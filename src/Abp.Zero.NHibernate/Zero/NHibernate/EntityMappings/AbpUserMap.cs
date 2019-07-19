@@ -3,7 +3,7 @@ using Abp.NHibernate.EntityMappings;
 
 namespace Abp.Zero.NHibernate.EntityMappings
 {
-    public abstract class AbpUserMap<TUser> : EntityMap<TUser, long>
+    public abstract class AbpUserMap<TUser> : EntityMap<TUser>
         where TUser : AbpUser<TUser>
     {
         protected AbpUserMap()

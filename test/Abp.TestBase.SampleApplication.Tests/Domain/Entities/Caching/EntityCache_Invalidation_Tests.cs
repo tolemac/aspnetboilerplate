@@ -2,6 +2,7 @@
 using Abp.Dependency;
 using Abp.Domain.Entities.Caching;
 using Abp.Domain.Repositories;
+using Abp.Extensions;
 using Abp.Runtime.Caching;
 using Abp.TestBase.SampleApplication.Messages;
 using Shouldly;
@@ -24,7 +25,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Domain.Entities.Caching
         public void Cached_Entities_Should_Be_Refreshed_On_Change()
         {
             //Arrange
-            AbpSession.TenantId = 1;
+            AbpSession.TenantId = GuidExtensions.Guid1;
             var message1 = _messageRepository.Single(m => m.Text == "tenant-1-message-1");
 
             //Act & Assert
@@ -45,7 +46,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Domain.Entities.Caching
 
         public class MessageCache : EntityCache<Message, MessageCacheItem>, IMessageCache, ITransientDependency
         {
-            public MessageCache(ICacheManager cacheManager, IRepository<Message, int> repository)
+            public MessageCache(ICacheManager cacheManager, IRepository<Message> repository)
                 : base(cacheManager, repository)
             {
 

@@ -61,7 +61,7 @@ namespace Abp.EntityFramework.Repositories
             foreach (var entityTypeInfo in _dbContextEntityFinder.GetEntityTypeInfos(dbContextType))
             {
                 var primaryKeyType = EntityHelper.GetPrimaryKeyType(entityTypeInfo.EntityType);
-                if (primaryKeyType == typeof(int))
+                if (primaryKeyType == typeof(Guid))
                 {
                     var genericRepositoryType = repositoryInterface.MakeGenericType(entityTypeInfo.EntityType);
                     if (!iocManager.IsRegistered(genericRepositoryType))

@@ -1,5 +1,6 @@
 using Abp.Domain.Entities;
 using Abp.Events.Bus.Entities;
+using Abp.Extensions;
 using Shouldly;
 using Xunit;
 
@@ -15,11 +16,11 @@ namespace Abp.Tests.Events.Bus
             EventBus.Register<EntityChangedEventData<Person>>(
                 eventData =>
                 {
-                    eventData.Entity.Id.ShouldBe(42);
+                    eventData.Entity.Id.ShouldBe(GuidExtensions.Guid42);
                     triggeredEvent = true;
                 });
 
-            EventBus.Trigger(new EntityUpdatedEventData<Person>(new Person { Id = 42 }));
+            EventBus.Trigger(new EntityUpdatedEventData<Person>(new Person { Id = GuidExtensions.Guid42 }));
 
             triggeredEvent.ShouldBe(true);
         }
@@ -32,11 +33,11 @@ namespace Abp.Tests.Events.Bus
             EventBus.Register<EntityChangedEventData<Person>>(
                 eventData =>
                 {
-                    eventData.Entity.Id.ShouldBe(42);
+                    eventData.Entity.Id.ShouldBe(GuidExtensions.Guid42);
                     triggeredEvent = true;
                 });
 
-            EventBus.Trigger(new EntityChangedEventData<Student>(new Student { Id = 42 }));
+            EventBus.Trigger(new EntityChangedEventData<Student>(new Student { Id = GuidExtensions.Guid42 }));
 
             triggeredEvent.ShouldBe(true);
         }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Abp.Runtime.Validation;
 using Abp.TestBase.SampleApplication.ContactLists;
 using Abp.TestBase.SampleApplication.People;
@@ -124,7 +125,7 @@ namespace Abp.TestBase.SampleApplication.Tests.People
 
             var personAppService = Resolve<IPersonAppService>();
 
-            AbpSession.UserId = 1;
+            AbpSession.UserId = GuidExtensions.Guid1;
 
             var halil = await UsingDbContextAsync(async context => await context.People.SingleAsync(p => p.Name == "halil"));
 
@@ -156,7 +157,7 @@ namespace Abp.TestBase.SampleApplication.Tests.People
 
             var personAppService = Resolve<IPersonAppService>();
 
-            AbpSession.UserId = 1;
+            AbpSession.UserId = GuidExtensions.Guid1;
             
             var halil = await UsingDbContextAsync(async context => await context.People.SingleAsync(p => p.Name == "halil"));
 
@@ -173,7 +174,7 @@ namespace Abp.TestBase.SampleApplication.Tests.People
         {
             var personAppService = Resolve<IPersonAppService>();
 
-            personAppService.TestPrimitiveMethod(42, "adana", new EntityDto(7)).ShouldBe("42#adana#7");
+            personAppService.TestPrimitiveMethod(42, "adana", new EntityDto(GuidExtensions.Guid7)).ShouldBe($"42#adana#{GuidExtensions.Guid7}");
         }
     }
 }

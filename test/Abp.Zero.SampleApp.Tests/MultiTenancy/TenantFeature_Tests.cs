@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Features;
+using Abp.Extensions;
 using Abp.MultiTenancy;
 using Abp.Zero.SampleApp.Features;
 using Abp.Zero.SampleApp.MultiTenancy;
@@ -24,7 +25,7 @@ namespace Abp.Zero.SampleApp.Tests.MultiTenancy
             //Create tenants
             var firstTenantId = UsingDbContext(context =>
             {
-                var firstTenant = new Tenant("Tenant1", "Tenant1");
+                var firstTenant = new Tenant(GuidExtensions.Guid1, "Tenant1", "Tenant1");
                 context.Tenants.Add(firstTenant);
                 context.SaveChanges();
                 return firstTenant.Id;
@@ -32,7 +33,7 @@ namespace Abp.Zero.SampleApp.Tests.MultiTenancy
 
             var secondTenantId = UsingDbContext(context =>
             {
-                var secondTenant = new Tenant("Tenant2", "Tenant2");
+                var secondTenant = new Tenant(GuidExtensions.Guid2, "Tenant2", "Tenant2");
                 context.Tenants.Add(secondTenant);
                 context.SaveChanges();
                 return secondTenant.Id;

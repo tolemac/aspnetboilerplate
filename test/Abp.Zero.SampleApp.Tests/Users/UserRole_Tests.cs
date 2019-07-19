@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Abp.Authorization.Roles;
 using Abp.Authorization.Users;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Abp.IdentityFramework;
 using Abp.Organizations;
 using Abp.Zero.SampleApp.MultiTenancy;
@@ -19,7 +20,7 @@ namespace Abp.Zero.SampleApp.Tests.Users
             UsingDbContext(
                 context =>
                 {
-                    var tenant1 = context.Tenants.Add(new Tenant("tenant1", "Tenant one"));
+                    var tenant1 = context.Tenants.Add(new Tenant(GuidExtensions.Guid2, "tenant1", "Tenant one"));
                     context.SaveChanges();
 
                     AbpSession.TenantId = tenant1.Id;

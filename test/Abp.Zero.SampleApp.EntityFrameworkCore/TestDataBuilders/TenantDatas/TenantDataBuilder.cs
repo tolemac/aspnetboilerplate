@@ -1,3 +1,5 @@
+using System;
+
 namespace Abp.Zero.SampleApp.EntityFrameworkCore.TestDataBuilders.TenantDatas
 {
     public class TenantDataBuilder
@@ -9,7 +11,7 @@ namespace Abp.Zero.SampleApp.EntityFrameworkCore.TestDataBuilders.TenantDatas
             _context = context;
         }
 
-        public void Build(int tenantId)
+        public void Build(Guid tenantId)
         {
             new TenantUserBuilder(_context).Build(tenantId);
         }

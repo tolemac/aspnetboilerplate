@@ -19,7 +19,7 @@ namespace Abp.Zero.SampleApp.Tests.TestDatas
 
         private void CreateTenants()
         {
-            _context.Tenants.Add(new Tenant(Tenant.DefaultTenantName, Tenant.DefaultTenantName));
+            _context.Tenants.Add(new Tenant(Tenant.DefaultTenantId, Tenant.DefaultTenantName, Tenant.DefaultTenantName));
             _context.SaveChanges();
         }
     }

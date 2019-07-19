@@ -6,6 +6,7 @@ using Abp.Domain.Repositories;
 using Abp.ZeroCore.SampleApp.Core.Shop;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System;
 
 namespace Abp.ZeroCore.SampleApp.Application.Shop
 {
@@ -45,7 +46,7 @@ namespace Abp.ZeroCore.SampleApp.Application.Shop
             ObjectMapper.Map(input, product);
         }
 
-        public async Task Translate(int productId, ProductTranslationDto input)
+        public async Task Translate(Guid productId, ProductTranslationDto input)
         {
             var translation = await _productTranslationRepository.GetAll()
                                                            .FirstOrDefaultAsync(pt => pt.CoreId == productId && pt.Language == input.Language);

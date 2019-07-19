@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Abp.Zero.SampleApp.Roles;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
@@ -49,7 +50,7 @@ namespace Abp.Zero.SampleApp.EntityFrameworkCore.Tests
             UsingDbContext(context => { context.Roles.Count().ShouldBe(1); });
 
             //Switch to tenant 1
-            AbpSession.TenantId = 1;
+            AbpSession.TenantId = GuidExtensions.Guid1;
 
             UsingDbContext(context => { context.Roles.Count().ShouldBe(0); });
 
@@ -76,7 +77,7 @@ namespace Abp.Zero.SampleApp.EntityFrameworkCore.Tests
                         context.Roles.First().Name.ShouldBe("HostRole1");
                     });
 
-                    using (uowManager.Current.SetTenantId(1)) //Switch to tenant 1
+                    using (uowManager.Current.SetTenantId(GuidExtensions.Guid1)) //Switch to tenant 1
                     {
                         UsingDbContext(context => { context.Roles.Count().ShouldBe(0); });
 

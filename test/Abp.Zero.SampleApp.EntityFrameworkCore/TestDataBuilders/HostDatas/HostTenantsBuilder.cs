@@ -21,21 +21,21 @@ namespace Abp.Zero.SampleApp.EntityFrameworkCore.TestDataBuilders.HostDatas
 
         private void CreateTenants()
         {
-            CreateTenantIfNotExists(MultiTenancy.Tenant.DefaultTenantName);
+            CreateTenantIfNotExists(MultiTenancy.Tenant.DefaultTenantId, MultiTenancy.Tenant.DefaultTenantName);
         }
 
-        private void CreateTenantIfNotExists(string tenancyName)
+        private void CreateTenantIfNotExists(Guid id, string tenancyName)
         {
-            if (_context.Tenants.Any(t => t.TenancyName == tenancyName))
+            if (_context.Tenants.Any(t => t.TenancyName == tenancyName && t.Id == id))
             {
                 return;
             }
 
-            var tenant = _context.Tenants.FirstOrDefault(t => t.TenancyName == tenancyName);
+            var tenant = _context.Tenants.FirstOrDefault(t => t.TenancyName == tenancyName && t.Id == id);
             if (tenant == null)
             {
                 tenant = _context.Tenants.Add(
-                    new MultiTenancy.Tenant(tenancyName, tenancyName)
+                    new MultiTenancy.Tenant(id, tenancyName, tenancyName)
                     {
                         ConnectionString = SimpleStringCipher.Instance.Encrypt(
                             $"server=localhost;database=AbpZeroTenantDb_{tenancyName}_{Guid.NewGuid().ToString("N").Left(8)};trusted_connection=true;"

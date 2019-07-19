@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.EntityFrameworkCore.Tests.Domain;
+using Abp.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
 using Xunit;
@@ -13,14 +14,14 @@ namespace Abp.EntityFrameworkCore.Tests.Tests
     public class Repository_Tests : EntityFrameworkCoreModuleTestBase
     {
         private readonly IRepository<Blog> _blogRepository;
-        private readonly IRepository<Post, Guid> _postRepository;
+        private readonly IRepository<Post> _postRepository;
         private readonly IUnitOfWorkManager _uowManager;
 
         public Repository_Tests()
         {
             _uowManager = Resolve<IUnitOfWorkManager>();
             _blogRepository = Resolve<IRepository<Blog>>();
-            _postRepository = Resolve<IRepository<Post, Guid>>();
+            _postRepository = Resolve<IRepository<Post>>();
         }
 
         [Fact]
@@ -38,7 +39,7 @@ namespace Abp.EntityFrameworkCore.Tests.Tests
         [Fact]
         public async Task Should_Automatically_Save_Changes_On_Uow()
         {
-            int blog1Id;
+            Guid blog1Id;
 
             //Act
 
@@ -108,7 +109,7 @@ namespace Abp.EntityFrameworkCore.Tests.Tests
         {
             using (var uow = _uowManager.Begin())
             {
-                var blog1 = await _blogRepository.GetAsync(1);
+                var blog1 = await _blogRepository.GetAsync(GuidExtensions.Guid1);
                 var post = new Post(blog1, "a test title", "a test body");
                 await _postRepository.InsertAsync(post);
                 await uow.CompleteAsync();

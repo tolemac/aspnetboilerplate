@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Abp.NHibernate.Tests.Entities;
 using Shouldly;
 using Xunit;
@@ -20,24 +21,24 @@ namespace Abp.NHibernate.Tests
         {
             _bookRepository = Resolve<IRepository<Book>>();
             _unitOfWorkManager = Resolve<IUnitOfWorkManager>();
-            UsingSession(session => session.Save(new Book { Name = "Hitchhikers Guide to the Galaxy" }));
+            UsingSession(session => session.Save(new Book { Id = GuidExtensions.Guid1, Name = "Hitchhikers Guide to the Galaxy" }));
         }
 
         [Fact]
         public void Should_Set_CreatorUserId_When_DynamicInsert_Is_Enabled()
         {
-            AbpSession.UserId = 1;
+            AbpSession.UserId = GuidExtensions.Guid1;
 
             using (var uow = _unitOfWorkManager.Begin())
             {
-                var book = _bookRepository.Get(1);
+                var book = _bookRepository.Get(GuidExtensions.Guid1);
                 book.ShouldNotBeNull();
                 book.Name = "Hitchhiker's Guide to the Galaxy";
                 _bookRepository.Update(book);
                 uow.Complete();
             }
 
-            var book2 = _bookRepository.Get(1);
+            var book2 = _bookRepository.Get(GuidExtensions.Guid1);
             book2.LastModifierUserId.ShouldNotBeNull();
         }
     }

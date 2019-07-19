@@ -1,4 +1,5 @@
-﻿using Shouldly;
+﻿using Abp.Extensions;
+using Shouldly;
 using Xunit;
 
 namespace Abp.Tests
@@ -8,13 +9,13 @@ namespace Abp.Tests
         [Fact]
         public void GetHashCode_Test()
         {
-            UserIdentifier.Parse("5@4").GetHashCode().ShouldBe(UserIdentifier.Parse("5@4").GetHashCode());
+            UserIdentifier.Parse($"{GuidExtensions.Guid5}@{GuidExtensions.Guid4}").GetHashCode().ShouldBe(UserIdentifier.Parse($"{GuidExtensions.Guid5}@{GuidExtensions.Guid4}").GetHashCode());
 
-            UserIdentifier.Parse("1@1").GetHashCode().ShouldNotBe(UserIdentifier.Parse("2@2").GetHashCode());
+            UserIdentifier.Parse($"{GuidExtensions.Guid1}@{GuidExtensions.Guid1}").GetHashCode().ShouldNotBe(UserIdentifier.Parse($"{GuidExtensions.Guid2}@{GuidExtensions.Guid2}").GetHashCode());
 
-            UserIdentifier.Parse("1@0").GetHashCode().ShouldNotBe(UserIdentifier.Parse("0@1").GetHashCode());
+            UserIdentifier.Parse($"{GuidExtensions.Guid1}@{GuidExtensions.Guid0}").GetHashCode().ShouldNotBe(UserIdentifier.Parse($"{GuidExtensions.Guid0}@{GuidExtensions.Guid1}").GetHashCode());
 
-            UserIdentifier.Parse("1@2").GetHashCode().ShouldNotBe(UserIdentifier.Parse("2@1").GetHashCode());
+            UserIdentifier.Parse($"{GuidExtensions.Guid1}@{GuidExtensions.Guid2}").GetHashCode().ShouldNotBe(UserIdentifier.Parse($"{GuidExtensions.Guid2}@{GuidExtensions.Guid1}").GetHashCode());
         }
     }
 }

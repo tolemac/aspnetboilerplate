@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Abp.Zero.SampleApp.Users;
 using Shouldly;
 using Xunit;
@@ -10,17 +11,17 @@ namespace Abp.Zero.SampleApp.Tests.Repository
 {
     public class Repository_Hard_Delete_Test : SampleAppTestBase
     {
-        private readonly IRepository<User, long> _useRepository;
+        private readonly IRepository<User> _useRepository;
 
         public Repository_Hard_Delete_Test()
         {
-            _useRepository = LocalIocManager.Resolve<IRepository<User, long>>();
+            _useRepository = LocalIocManager.Resolve<IRepository<User>>();
         }
 
         [Fact]
         public async Task Should_Permanently_Delete_SoftDelete_Entity_With_HarDelete_Method()
         {
-            AbpSession.TenantId = 1;
+            AbpSession.TenantId = GuidExtensions.Guid1;
 
             var uowManager = Resolve<IUnitOfWorkManager>();
 
@@ -61,7 +62,7 @@ namespace Abp.Zero.SampleApp.Tests.Repository
         [Fact]
         public async Task Should_Permanently_Delete_Multiple_SoftDelete_Entities_With_HarDelete_Method()
         {
-            AbpSession.TenantId = 1;
+            AbpSession.TenantId = GuidExtensions.Guid1;
 
             var uowManager = Resolve<IUnitOfWorkManager>();
 
@@ -76,7 +77,7 @@ namespace Abp.Zero.SampleApp.Tests.Repository
 
             using (var uow = uowManager.Begin())
             {
-                await _useRepository.HardDeleteAsync(u => u.Id > 0);
+                await _useRepository.HardDeleteAsync(u => u.Id != default);
 
                 uow.Complete();
             }

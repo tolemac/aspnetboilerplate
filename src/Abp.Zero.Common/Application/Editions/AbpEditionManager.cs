@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Features;
@@ -29,17 +30,17 @@ namespace Abp.Application.Editions
             EditionRepository = editionRepository;
         }
 
-        public virtual Task<string> GetFeatureValueOrNullAsync(int editionId, string featureName)
+        public virtual Task<string> GetFeatureValueOrNullAsync(Guid editionId, string featureName)
         {
             return _featureValueStore.GetEditionValueOrNullAsync(editionId, featureName);
         }
 
-        public virtual Task SetFeatureValueAsync(int editionId, string featureName, string value)
+        public virtual Task SetFeatureValueAsync(Guid editionId, string featureName, string value)
         {
             return _featureValueStore.SetEditionFeatureValueAsync(editionId, featureName, value);
         }
 
-        public virtual async Task<IReadOnlyList<NameValue>> GetFeatureValuesAsync(int editionId)
+        public virtual async Task<IReadOnlyList<NameValue>> GetFeatureValuesAsync(Guid editionId)
         {
             var values = new List<NameValue>();
 
@@ -51,7 +52,7 @@ namespace Abp.Application.Editions
             return values;
         }
 
-        public virtual async Task SetFeatureValuesAsync(int editionId, params NameValue[] values)
+        public virtual async Task SetFeatureValuesAsync(Guid editionId, params NameValue[] values)
         {
             if (values.IsNullOrEmpty())
             {
@@ -74,12 +75,12 @@ namespace Abp.Application.Editions
             return EditionRepository.FirstOrDefaultAsync(edition => edition.Name == name);
         }
 
-        public virtual Task<Edition> FindByIdAsync(int id)
+        public virtual Task<Edition> FindByIdAsync(Guid id)
         {
             return EditionRepository.FirstOrDefaultAsync(id);
         }
 
-        public virtual Task<Edition> GetByIdAsync(int id)
+        public virtual Task<Edition> GetByIdAsync(Guid id)
         {
             return EditionRepository.GetAsync(id);
         }

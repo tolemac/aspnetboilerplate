@@ -7,6 +7,7 @@ using Abp.Dapper.Repositories;
 using Abp.Dapper.Tests.Entities;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using DapperExtensions;
 using Shouldly;
 using Xunit;
@@ -107,22 +108,22 @@ namespace Abp.Dapper.Tests
                     softDeletedProductFromDapperWhenFilterDisabled.ShouldNotBeNull();
                 }
 
-                using (AbpSession.Use(2, 266))
+                using (AbpSession.Use(GuidExtensions.Guid2, GuidExtensions.Guid266))
                 {
-                    int productWithTenant2Id = _productDapperRepository.InsertAndGetId(new Product("ProductWithTenant2"));
+                    var productWithTenant2Id = _productDapperRepository.InsertAndGetId(new Product("ProductWithTenant2"));
 
                     Product productWithTenant2 = _productRepository.Get(productWithTenant2Id);
 
-                    productWithTenant2.TenantId.ShouldBe(1); //Not sure about that?,Because we changed TenantId to 2 in this scope !!! Abp.TenantId = 2 now NOT 1 !!!
+                    productWithTenant2.TenantId.ShouldBe(GuidExtensions.Guid1); //Not sure about that?,Because we changed TenantId to 2 in this scope !!! Abp.TenantId = 2 now NOT 1 !!!
                 }
 
-                using (_unitOfWorkManager.Current.SetTenantId(3))
+                using (_unitOfWorkManager.Current.SetTenantId(GuidExtensions.Guid3))
                 {
-                    int productWithTenant3Id = _productDapperRepository.InsertAndGetId(new Product("ProductWithTenant3"));
+                    var productWithTenant3Id = _productDapperRepository.InsertAndGetId(new Product("ProductWithTenant3"));
 
                     Product productWithTenant3 = _productRepository.Get(productWithTenant3Id);
 
-                    productWithTenant3.TenantId.ShouldBe(3);
+                    productWithTenant3.TenantId.ShouldBe(GuidExtensions.Guid3);
                 }
 
                 Product productWithTenantId3FromDapper = _productDapperRepository.FirstOrDefault(x => x.Name == "ProductWithTenant3");
@@ -131,7 +132,7 @@ namespace Abp.Dapper.Tests
                 Product p = await _productDapperRepository.FirstOrDefaultAsync(x => x.Status == Status.Active);
                 p.ShouldNotBeNull();
 
-                using (_unitOfWorkManager.Current.SetTenantId(3))
+                using (_unitOfWorkManager.Current.SetTenantId(GuidExtensions.Guid3))
                 {
                     Product productWithTenantId3FromDapperInsideTenantScope = _productDapperRepository.FirstOrDefault(x => x.Name == "ProductWithTenant3");
                     productWithTenantId3FromDapperInsideTenantScope.ShouldNotBeNull();
@@ -140,7 +141,7 @@ namespace Abp.Dapper.Tests
                 //About issue-#2091
                 using (_unitOfWorkManager.Current.SetTenantId(AbpSession.TenantId))
                 {
-                    int productWithTenantId40 = _productDapperRepository.InsertAndGetId(new Product("ProductWithTenantId40"));
+                    var productWithTenantId40 = _productDapperRepository.InsertAndGetId(new Product("ProductWithTenantId40"));
 
                     Product productWithTenant40 = _productRepository.Get(productWithTenantId40);
 
@@ -149,12 +150,13 @@ namespace Abp.Dapper.Tests
                 }
 
                 //Second DbContext tests
-                int productDetailId = _productDetailRepository.InsertAndGetId(new ProductDetail("Woman"));
+                var productDetailId = _productDetailRepository.InsertAndGetId(new ProductDetail("Woman"));
                 _productDetailDapperRepository.Get(productDetailId).ShouldNotBeNull();
 
                 uow.Complete();
             }
         }
+
 
         //About issue-#3990
         [Fact]
@@ -164,7 +166,7 @@ namespace Abp.Dapper.Tests
             {
                 using (_unitOfWorkManager.Current.SetTenantId(AbpSession.TenantId))
                 {
-                    int personWithTenantId40 = _personDapperRepository.InsertAndGetId(new Person("PersonWithTenantId40"));
+                    var personWithTenantId40 = _personDapperRepository.InsertAndGetId(new Person("PersonWithTenantId40"));
 
                     Person personWithTenant40 = _personRepository.Get(personWithTenantId40);
 
@@ -175,7 +177,7 @@ namespace Abp.Dapper.Tests
         }
 
         [Fact]
-        public async Task Dapper_Repository_Count_Should_Return_Correct_Value_For_Nullable_Int_Filter()
+         public async Task Dapper_Repository_Count_Should_Return_Correct_Value_For_Nullable_Int_Filter()
         {
             using (IUnitOfWorkCompleteHandle uow = _unitOfWorkManager.Begin())
             {
@@ -184,7 +186,7 @@ namespace Abp.Dapper.Tests
                     await _goodDapperRepository.InsertAsync(new Good { Name = "AbpTest" });
                     await _unitOfWorkManager.Current.SaveChangesAsync();
 
-                    int? id = 1;
+                    Guid? id = GuidExtensions.Guid1;
 
                     var dapperCount = await _goodDapperRepository.CountAsync(a => a.Id != id && a.Name == "AbpTest");
                     dapperCount.ShouldBe(0);

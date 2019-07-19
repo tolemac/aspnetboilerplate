@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using Abp.EntityFrameworkCore.Dapper.Tests.Domain;
 using Abp.EntityFrameworkCore.Dapper.Tests.Ef;
+using Abp.Extensions;
 using Abp.TestBase;
 using Abp.Timing;
 
@@ -33,6 +34,7 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests
                 context =>
                 {
                     var blog1 = new Blog("test-blog-1", "http://testblog1.myblogs.com");
+                    blog1.Id = GuidExtensions.Guid1;
 
                     context.Blogs.Add(blog1);
 

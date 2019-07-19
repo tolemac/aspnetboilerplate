@@ -6,7 +6,7 @@ using Abp.Domain.Entities;
 
 namespace Abp.EntityFrameworkCore.Tests.Domain
 {
-    public class Post : AuditedEntity<Guid>, ISoftDelete, IMayHaveTenant
+    public class Post : AuditedEntity, ISoftDelete, IMayHaveTenant
     {
         [Required]
         public Blog Blog { get; set; }
@@ -17,7 +17,7 @@ namespace Abp.EntityFrameworkCore.Tests.Domain
 
         public bool IsDeleted { get; set; }
 
-        public int? TenantId { get; set; }
+        public Guid? TenantId { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
 

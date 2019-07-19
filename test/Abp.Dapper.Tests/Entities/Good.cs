@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using Abp.Domain.Entities.Auditing;
 
 namespace Abp.Dapper.Tests.Entities
@@ -8,6 +9,6 @@ namespace Abp.Dapper.Tests.Entities
     {
         public string Name { get; set; }
 
-        public int ParentId { get; set; }
+        public Guid ParentId { get; set; }
     }
 }

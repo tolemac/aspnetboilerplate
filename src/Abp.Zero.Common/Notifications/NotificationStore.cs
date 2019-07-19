@@ -16,20 +16,20 @@ namespace Abp.Notifications
     /// </summary>
     public class NotificationStore : INotificationStore, ITransientDependency
     {
-        private readonly IRepository<NotificationInfo, Guid> _notificationRepository;
-        private readonly IRepository<TenantNotificationInfo, Guid> _tenantNotificationRepository;
-        private readonly IRepository<UserNotificationInfo, Guid> _userNotificationRepository;
-        private readonly IRepository<NotificationSubscriptionInfo, Guid> _notificationSubscriptionRepository;
+        private readonly IRepository<NotificationInfo> _notificationRepository;
+        private readonly IRepository<TenantNotificationInfo> _tenantNotificationRepository;
+        private readonly IRepository<UserNotificationInfo> _userNotificationRepository;
+        private readonly IRepository<NotificationSubscriptionInfo> _notificationSubscriptionRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationStore"/> class.
         /// </summary>
         public NotificationStore(
-            IRepository<NotificationInfo, Guid> notificationRepository,
-            IRepository<TenantNotificationInfo, Guid> tenantNotificationRepository,
-            IRepository<UserNotificationInfo, Guid> userNotificationRepository,
-            IRepository<NotificationSubscriptionInfo, Guid> notificationSubscriptionRepository,
+            IRepository<NotificationInfo> notificationRepository,
+            IRepository<TenantNotificationInfo> tenantNotificationRepository,
+            IRepository<UserNotificationInfo> userNotificationRepository,
+            IRepository<NotificationSubscriptionInfo> notificationSubscriptionRepository,
             IUnitOfWorkManager unitOfWorkManager)
         {
             _notificationRepository = notificationRepository;
@@ -107,7 +107,7 @@ namespace Abp.Notifications
         }
 
         [UnitOfWork]
-        public virtual async Task<List<NotificationSubscriptionInfo>> GetSubscriptionsAsync(int?[] tenantIds, string notificationName, string entityTypeName, string entityId)
+        public virtual async Task<List<NotificationSubscriptionInfo>> GetSubscriptionsAsync(Guid?[] tenantIds, string notificationName, string entityTypeName, string entityId)
         {
             var subscriptions = new List<NotificationSubscriptionInfo>();
 
@@ -129,7 +129,7 @@ namespace Abp.Notifications
         }
 
         [UnitOfWork]
-        protected virtual async Task<List<NotificationSubscriptionInfo>> GetSubscriptionsAsync(int? tenantId, string notificationName, string entityTypeName, string entityId)
+        protected virtual async Task<List<NotificationSubscriptionInfo>> GetSubscriptionsAsync(Guid? tenantId, string notificationName, string entityTypeName, string entityId)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
@@ -156,7 +156,7 @@ namespace Abp.Notifications
         }
 
         [UnitOfWork]
-        public virtual async Task UpdateUserNotificationStateAsync(int? tenantId, Guid userNotificationId, UserNotificationState state)
+        public virtual async Task UpdateUserNotificationStateAsync(Guid? tenantId, Guid userNotificationId, UserNotificationState state)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
@@ -188,7 +188,7 @@ namespace Abp.Notifications
         }
 
         [UnitOfWork]
-        public virtual async Task DeleteUserNotificationAsync(int? tenantId, Guid userNotificationId)
+        public virtual async Task DeleteUserNotificationAsync(Guid? tenantId, Guid userNotificationId)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {
@@ -278,7 +278,7 @@ namespace Abp.Notifications
         }
 
         [UnitOfWork]
-        public virtual Task<UserNotificationInfoWithNotificationInfo> GetUserNotificationWithNotificationOrNullAsync(int? tenantId, Guid userNotificationId)
+        public virtual Task<UserNotificationInfoWithNotificationInfo> GetUserNotificationWithNotificationOrNullAsync(Guid? tenantId, Guid userNotificationId)
         {
             using (_unitOfWorkManager.Current.SetTenantId(tenantId))
             {

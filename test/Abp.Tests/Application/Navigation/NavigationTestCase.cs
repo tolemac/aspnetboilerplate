@@ -4,6 +4,7 @@ using Abp.Application.Navigation;
 using Abp.Authorization;
 using Abp.Configuration.Startup;
 using Abp.Dependency;
+using Abp.Extensions;
 using Abp.Localization;
 using Castle.MicroKernel.Registration;
 using NSubstitute;
@@ -66,8 +67,8 @@ namespace Abp.Tests.Application.Navigation
         private static IPermissionChecker CreateMockPermissionChecker()
         {
             var permissionChecker = Substitute.For<IPermissionChecker>();
-            permissionChecker.IsGrantedAsync(new UserIdentifier(1, 1), "Abp.Zero.UserManagement").Returns(Task.FromResult(true));
-            permissionChecker.IsGrantedAsync(new UserIdentifier(1, 1), "Abp.Zero.RoleManagement").Returns(Task.FromResult(false));
+            permissionChecker.IsGrantedAsync(new UserIdentifier(GuidExtensions.Guid1, GuidExtensions.Guid1), "Abp.Zero.UserManagement").Returns(Task.FromResult(true));
+            permissionChecker.IsGrantedAsync(new UserIdentifier(GuidExtensions.Guid1, GuidExtensions.Guid1), "Abp.Zero.RoleManagement").Returns(Task.FromResult(false));
             return permissionChecker;
         }
 

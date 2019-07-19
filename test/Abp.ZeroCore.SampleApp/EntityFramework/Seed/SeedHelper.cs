@@ -3,6 +3,7 @@ using System.Transactions;
 using Abp.Dependency;
 using Abp.Domain.Uow;
 using Abp.EntityFrameworkCore.Uow;
+using Abp.Extensions;
 using Abp.MultiTenancy;
 using Abp.ZeroCore.SampleApp.EntityFramework.Seed.Host;
 using Abp.ZeroCore.SampleApp.EntityFramework.Seed.Tenants;
@@ -26,7 +27,7 @@ namespace Abp.ZeroCore.SampleApp.EntityFramework.Seed
 
             //Default tenant seed (in host database).
             new DefaultTenantBuilder(context).Create();
-            new TenantRoleAndUserBuilder(context, 1).Create();
+            new TenantRoleAndUserBuilder(context, GuidExtensions.Guid1).Create();
         }
 
         private static void WithDbContext<TDbContext>(IIocResolver iocResolver, Action<TDbContext> contextAction)

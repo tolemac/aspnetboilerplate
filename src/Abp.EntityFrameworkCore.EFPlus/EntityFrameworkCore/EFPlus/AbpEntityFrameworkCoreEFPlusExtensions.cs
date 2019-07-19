@@ -51,9 +51,9 @@ namespace Abp.EntityFrameworkCore.EFPlus
         /// <param name="predicate">Predicate to filter entities</param>
         /// <returns></returns>
         public static async Task<int> BatchDeleteAsync<TEntity>([NotNull] this IRepository<TEntity> repository, [NotNull]Expression<Func<TEntity, bool>> predicate)
-            where TEntity : Entity<int>
+            where TEntity : Entity
         {
-            return await repository.BatchDeleteAsync<TEntity, int>(predicate);
+            return await repository.BatchDeleteAsync(predicate);
         }
 
         /// <summary>
@@ -93,9 +93,9 @@ namespace Abp.EntityFrameworkCore.EFPlus
         public static async Task<int> BatchUpdateAsync<TEntity>(
             [NotNull]this IRepository<TEntity> repository, [NotNull]Expression<Func<TEntity, TEntity>> updateExpression,
             [NotNull]Expression<Func<TEntity, bool>> predicate)
-            where TEntity : Entity<int>
+            where TEntity : Entity
         {
-            return await repository.BatchUpdateAsync<TEntity, int>(updateExpression, predicate);
+            return await repository.BatchUpdateAsync<TEntity>(updateExpression, predicate);
         }
 
         private static Expression<Func<TEntity, bool>> GetFilterExpressionOrNull<TEntity, TPrimaryKey>(IIocResolver iocResolver) where TEntity : Entity<TPrimaryKey>
@@ -144,7 +144,7 @@ namespace Abp.EntityFrameworkCore.EFPlus
             return expression;
         }
 
-        private static int? GetCurrentTenantIdOrNull(IIocResolver iocResolver)
+        private static Guid? GetCurrentTenantIdOrNull(IIocResolver iocResolver)
         {
             using (var scope = iocResolver.CreateScope())
             {

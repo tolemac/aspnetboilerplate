@@ -2,6 +2,7 @@
 using Abp.Configuration.Startup;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Abp.Runtime.Security;
 using Abp.ZeroCore.SampleApp.Core;
 using Microsoft.AspNetCore.Identity;
@@ -22,9 +23,9 @@ namespace Abp.IdentityServer4
         public async Task Should_Inject_AbpUserClaimsPrincipalFactory()
         {
             Resolve<IMultiTenancyConfig>().IsEnabled = true;
-            AbpSession.TenantId = 1;
+            AbpSession.TenantId = GuidExtensions.Guid1;
 
-            var repository = Resolve<IRepository<User, long>>();
+            var repository = Resolve<IRepository<User>>();
 
             var userToAdd = User.CreateTenantAdminUser(AbpSession.TenantId.Value, "admin@test.com");
             userToAdd.Password = "123qwe";

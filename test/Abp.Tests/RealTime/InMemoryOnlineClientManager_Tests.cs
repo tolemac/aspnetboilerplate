@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using Abp.Extensions;
 using Abp.RealTime;
 using Shouldly;
 using Xunit;
@@ -21,13 +22,13 @@ namespace Abp.Tests.RealTime
         [Fact]
         public void Test_All()
         {
-            int tenantId = 1;
+            Guid tenantId = GuidExtensions.Guid1;
 
-            Dictionary<string, int> connections = new Dictionary<string, int>();
+            Dictionary<string, Guid> connections = new Dictionary<string, Guid>();
 
             for (int i = 0; i < 100; i++)
             {
-                connections.Add(MakeNewConnectionId(), i + 1);
+                connections.Add(MakeNewConnectionId(), Guid.NewGuid());
             }
 
             foreach (var pair in connections)

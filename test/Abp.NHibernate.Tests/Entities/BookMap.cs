@@ -6,7 +6,7 @@ namespace Abp.NHibernate.Tests.Entities
     {
         public BookMap() : base("Books")
         {
-            Id(x => x.Id);
+            Id(x => x.Id).GeneratedBy.Assigned();
             Map(x => x.Name);
 
             this.MapFullAudited();

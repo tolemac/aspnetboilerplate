@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Repositories;
+using Abp.Extensions;
 using Abp.MultiTenancy;
 using Abp.Zero.SampleApp.MultiTenancy;
 using Shouldly;
@@ -21,7 +22,7 @@ namespace Abp.Zero.SampleApp.Tests.MultiTenancy
         public void Should_Get_Tenant_By_Id()
         {
             //Act
-            var tenant = _tenantCache.Get(1);
+            var tenant = _tenantCache.Get(GuidExtensions.Guid1);
 
             //Assert
             tenant.TenancyName.ShouldBe(Tenant.DefaultTenantName);
@@ -34,7 +35,7 @@ namespace Abp.Zero.SampleApp.Tests.MultiTenancy
             var tenant = _tenantCache.GetOrNull(Tenant.DefaultTenantName);
 
             //Assert
-            tenant.Id.ShouldBe(1);
+            tenant.Id.ShouldBe(GuidExtensions.Guid1);
         }
 
         [Fact]
@@ -56,7 +57,7 @@ namespace Abp.Zero.SampleApp.Tests.MultiTenancy
             var tenant = _tenantCache.GetOrNull(Tenant.DefaultTenantName);
 
             //Assert
-            tenant.Id.ShouldBe(1);
+            tenant.Id.ShouldBe(GuidExtensions.Guid1);
             tenant.IsActive.ShouldBeTrue();
 
             //--- Change tenant name
@@ -76,7 +77,7 @@ namespace Abp.Zero.SampleApp.Tests.MultiTenancy
             //Can get with new name
             tenant = _tenantCache.GetOrNull("Default-Changed");
             tenant.ShouldNotBeNull();
-            tenant.Id.ShouldBe(1);
+            tenant.Id.ShouldBe(GuidExtensions.Guid1);
             tenant.IsActive.ShouldBeFalse();
         }
     }

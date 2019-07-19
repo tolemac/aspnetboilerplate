@@ -9,12 +9,12 @@ namespace Abp.Auditing
     /// </summary>
     public class AuditingStore : IAuditingStore, ITransientDependency
     {
-        private readonly IRepository<AuditLog, long> _auditLogRepository;
+        private readonly IRepository<AuditLog> _auditLogRepository;
 
         /// <summary>
         /// Creates  a new <see cref="AuditingStore"/>.
         /// </summary>
-        public AuditingStore(IRepository<AuditLog, long> auditLogRepository)
+        public AuditingStore(IRepository<AuditLog> auditLogRepository)
         {
             _auditLogRepository = auditLogRepository;
         }

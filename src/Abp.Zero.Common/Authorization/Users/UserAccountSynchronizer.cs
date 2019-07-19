@@ -15,14 +15,14 @@ namespace Abp.Authorization.Users
         IEventHandler<EntityUpdatedEventData<AbpUserBase>>,
         ITransientDependency
     {
-        private readonly IRepository<UserAccount, long> _userAccountRepository;
+        private readonly IRepository<UserAccount> _userAccountRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         /// <summary>
         /// Constructor
         /// </summary>
         public UserAccountSynchronizer(
-            IRepository<UserAccount, long> userAccountRepository,
+            IRepository<UserAccount> userAccountRepository,
             IUnitOfWorkManager unitOfWorkManager)
         {
             _userAccountRepository = userAccountRepository;

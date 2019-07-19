@@ -1,4 +1,5 @@
 using Abp.EntityFrameworkCore;
+using Abp.Extensions;
 using AbpAspNetCoreDemo.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +20,7 @@ namespace AbpAspNetCoreDemo.Db
 
             modelBuilder.Entity<Product>().HasData(new Product("Test product", 100)
             {
-                Id = 1
+                Id = GuidExtensions.Guid1
             });
         }
     }

@@ -14,7 +14,7 @@ namespace Abp.Runtime.Session
     /// </summary>
     public class ClaimsAbpSession : AbpSessionBase, ISingletonDependency
     {
-        public override long? UserId
+        public override Guid? UserId
         {
             get
             {
@@ -29,8 +29,8 @@ namespace Abp.Runtime.Session
                     return null;
                 }
 
-                long userId;
-                if (!long.TryParse(userIdClaim.Value, out userId))
+                Guid userId;
+                if (!Guid.TryParse(userIdClaim.Value, out userId))
                 {
                     return null;
                 }
@@ -39,7 +39,7 @@ namespace Abp.Runtime.Session
             }
         }
 
-        public override int? TenantId
+        public override Guid? TenantId
         {
             get
             {
@@ -56,7 +56,7 @@ namespace Abp.Runtime.Session
                 var tenantIdClaim = PrincipalAccessor.Principal?.Claims.FirstOrDefault(c => c.Type == AbpClaimTypes.TenantId);
                 if (!string.IsNullOrEmpty(tenantIdClaim?.Value))
                 {
-                    return Convert.ToInt32(tenantIdClaim.Value);
+                    return Guid.Parse(tenantIdClaim.Value);
                 }
 
                 if (UserId == null)
@@ -69,7 +69,7 @@ namespace Abp.Runtime.Session
             }
         }
 
-        public override long? ImpersonatorUserId
+        public override Guid? ImpersonatorUserId
         {
             get
             {
@@ -79,11 +79,11 @@ namespace Abp.Runtime.Session
                     return null;
                 }
 
-                return Convert.ToInt64(impersonatorUserIdClaim.Value);
+                return Guid.Parse(impersonatorUserIdClaim.Value);
             }
         }
 
-        public override int? ImpersonatorTenantId
+        public override Guid? ImpersonatorTenantId
         {
             get
             {
@@ -98,7 +98,7 @@ namespace Abp.Runtime.Session
                     return null;
                 }
 
-                return Convert.ToInt32(impersonatorTenantIdClaim.Value);
+                return Guid.Parse(impersonatorTenantIdClaim.Value);
             }
         }
 

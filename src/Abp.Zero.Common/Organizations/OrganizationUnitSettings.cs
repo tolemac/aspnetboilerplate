@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Abp.Configuration;
 using Abp.Dependency;
@@ -36,7 +37,7 @@ namespace Abp.Organizations
         /// Maximum allowed organization unit membership count for a user.
         /// Returns value for given tenant.
         /// </summary>
-        public async Task<int> GetMaxUserMembershipCountAsync(int? tenantId)
+        public async Task<int> GetMaxUserMembershipCountAsync(Guid? tenantId)
         {
             if (tenantId.HasValue)
             {
@@ -48,7 +49,7 @@ namespace Abp.Organizations
             }
         }
 
-        public async Task SetMaxUserMembershipCountAsync(int? tenantId, int value)
+        public async Task SetMaxUserMembershipCountAsync(Guid? tenantId, int value)
         {
             if (tenantId.HasValue)
             {

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Abp.Auditing;
+using Abp.Extensions;
 using Abp.Zero.SampleApp.Users;
 using Abp.Zero.SampleApp.Users.Dto;
 using Microsoft.AspNet.Identity;
@@ -51,7 +52,7 @@ namespace Abp.Zero.SampleApp.Tests.Users
         [Fact]
         public async Task Shoudl_Reset_Password()
         {
-            AbpSession.TenantId = 1; //Default tenant   
+            AbpSession.TenantId = GuidExtensions.Guid1; //Default tenant   
             var managerUser = await _userManager.FindByNameAsync("manager");
             managerUser.PasswordResetCode = "fc9640bb73ec40a2b42b479610741a5a";
             _userManager.Update(managerUser);
@@ -60,7 +61,7 @@ namespace Abp.Zero.SampleApp.Tests.Users
 
             await _userAppService.ResetPassword(new ResetPasswordInput
             {
-                TenantId = 1,
+                TenantId = GuidExtensions.Guid1,
                 UserId = managerUser.Id,
                 Password = "123qwe",
                 ResetCode = "fc9640bb73ec40a2b42b479610741a5a"

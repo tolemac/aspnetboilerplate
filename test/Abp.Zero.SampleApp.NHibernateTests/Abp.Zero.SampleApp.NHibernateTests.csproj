@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
     <AssemblyName>Abp.Zero.SampleApp.NHibernateTests</AssemblyName>
-    <PackageId>Abp.Zero.SampleApp.NHibernateTests</PackageId>
+    <PackageId>Abp-Guid.Zero.SampleApp.NHibernateTests</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>

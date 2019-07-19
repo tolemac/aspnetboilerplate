@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using Abp.Application.Editions;
@@ -29,9 +30,9 @@ namespace Abp.Application.Features
         where TUser : AbpUserBase
     {
         private readonly ICacheManager _cacheManager;
-        private readonly IRepository<TenantFeatureSetting, long> _tenantFeatureRepository;
+        private readonly IRepository<TenantFeatureSetting> _tenantFeatureRepository;
         private readonly IRepository<TTenant> _tenantRepository;
-        private readonly IRepository<EditionFeatureSetting, long> _editionFeatureRepository;
+        private readonly IRepository<EditionFeatureSetting> _editionFeatureRepository;
         private readonly IFeatureManager _featureManager;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
@@ -43,9 +44,9 @@ namespace Abp.Application.Features
         /// </summary>
         public AbpFeatureValueStore(
             ICacheManager cacheManager,
-            IRepository<TenantFeatureSetting, long> tenantFeatureRepository,
+            IRepository<TenantFeatureSetting> tenantFeatureRepository,
             IRepository<TTenant> tenantRepository,
-            IRepository<EditionFeatureSetting, long> editionFeatureRepository,
+            IRepository<EditionFeatureSetting> editionFeatureRepository,
             IFeatureManager featureManager,
             IUnitOfWorkManager unitOfWorkManager)
         {
@@ -61,18 +62,18 @@ namespace Abp.Application.Features
         }
 
         /// <inheritdoc/>
-        public virtual Task<string> GetValueOrNullAsync(int tenantId, Feature feature)
+        public virtual Task<string> GetValueOrNullAsync(Guid tenantId, Feature feature)
         {
             return GetValueOrNullAsync(tenantId, feature.Name);
         }
 
-        public virtual async Task<string> GetEditionValueOrNullAsync(int editionId, string featureName)
+        public virtual async Task<string> GetEditionValueOrNullAsync(Guid editionId, string featureName)
         {
             var cacheItem = await GetEditionFeatureCacheItemAsync(editionId);
             return cacheItem.FeatureValues.GetOrDefault(featureName);
         }
 
-        public virtual async Task<string> GetValueOrNullAsync(int tenantId, string featureName)
+        public virtual async Task<string> GetValueOrNullAsync(Guid tenantId, string featureName)
         {
             var cacheItem = await GetTenantFeatureCacheItemAsync(tenantId);
             var value = cacheItem.FeatureValues.GetOrDefault(featureName);
@@ -94,7 +95,7 @@ namespace Abp.Application.Features
         }
 
         [UnitOfWork]
-        public virtual async Task SetEditionFeatureValueAsync(int editionId, string featureName, string value)
+        public virtual async Task SetEditionFeatureValueAsync(Guid editionId, string featureName, string value)
         {
             using (_unitOfWorkManager.Current.SetTenantId(null))
             {
@@ -133,7 +134,7 @@ namespace Abp.Application.Features
             }
         }
 
-        protected virtual async Task<TenantFeatureCacheItem> GetTenantFeatureCacheItemAsync(int tenantId)
+        protected virtual async Task<TenantFeatureCacheItem> GetTenantFeatureCacheItemAsync(Guid tenantId)
         {
             return await _cacheManager.GetTenantFeatureCache().GetAsync(tenantId, async () =>
             {
@@ -168,7 +169,7 @@ namespace Abp.Application.Features
             });
         }
 
-        protected virtual async Task<EditionfeatureCacheItem> GetEditionFeatureCacheItemAsync(int editionId)
+        protected virtual async Task<EditionfeatureCacheItem> GetEditionFeatureCacheItemAsync(Guid editionId)
         {
             return await _cacheManager
                 .GetEditionFeatureCache()
@@ -178,7 +179,7 @@ namespace Abp.Application.Features
                 );
         }
 
-        protected virtual async Task<EditionfeatureCacheItem> CreateEditionFeatureCacheItem(int editionId)
+        protected virtual async Task<EditionfeatureCacheItem> CreateEditionFeatureCacheItem(Guid editionId)
         {
             var newCacheItem = new EditionfeatureCacheItem();
 

@@ -14,11 +14,11 @@ namespace Abp.Organizations
         IEventHandler<EntityDeletedEventData<AbpRoleBase>>, 
         ITransientDependency
     {
-        private readonly IRepository<OrganizationUnitRole, long> _organizationUnitRoleRepository;
+        private readonly IRepository<OrganizationUnitRole> _organizationUnitRoleRepository;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         public OrganizationUnitRoleRemover(
-            IRepository<OrganizationUnitRole, long> organizationUnitRoleRepository, 
+            IRepository<OrganizationUnitRole> organizationUnitRoleRepository, 
             IUnitOfWorkManager unitOfWorkManager)
         {
             _organizationUnitRoleRepository = organizationUnitRoleRepository;

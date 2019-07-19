@@ -4,7 +4,7 @@
     <TargetFramework>net461</TargetFramework>
     <AssemblyName>Abp.Zero.SampleApp.EntityFrameworkCore.ConsoleAppTest</AssemblyName>
     <OutputType>Exe</OutputType>
-    <PackageId>Abp.Zero.SampleApp.EntityFrameworkCore.ConsoleAppTest</PackageId>
+    <PackageId>Abp-Guid.Zero.SampleApp.EntityFrameworkCore.ConsoleAppTest</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>

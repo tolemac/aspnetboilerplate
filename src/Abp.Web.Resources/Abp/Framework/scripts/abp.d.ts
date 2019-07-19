@@ -22,21 +22,21 @@
 
         let tenantIdCookieName: string;
 
-        function setTenantIdCookie(tenantId?: number): void;
+        function setTenantIdCookie(tenantId?: string): void;
 
-        function getTenantIdCookie(): number;
+        function getTenantIdCookie(): string;
 
     }
 
     interface IAbpSession {
 
-        readonly userId?: number;
+        readonly userId?: string;
 
-        readonly tenantId?: number;
+        readonly tenantId?: string;
 
-        readonly impersonatorUserId?: number;
+        readonly impersonatorUserId?: string;
 
-        readonly impersonatorTenantId?: number;
+        readonly impersonatorTenantId?: string;
 
         readonly multiTenancySide: multiTenancy.sides;
 
@@ -234,7 +234,7 @@
 
             id: string;
 
-            userId: number;
+            userId: string;
 
             state: userNotificationState;
 

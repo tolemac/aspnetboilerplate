@@ -10,7 +10,7 @@ namespace Abp.Zero.SampleApp.Tests.Users
         [Fact]
         public void Should_Insert_And_Retrieve_User()
         {
-            var userRepository = LocalIocManager.Resolve<IRepository<User, long>>();
+            var userRepository = LocalIocManager.Resolve<IRepository<User>>();
 
             userRepository.FirstOrDefault(u => u.EmailAddress == "admin@aspnetboilerplate.com").ShouldBe(null);
 

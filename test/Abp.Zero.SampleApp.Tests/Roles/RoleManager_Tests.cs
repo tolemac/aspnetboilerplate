@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Abp.Authorization;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Abp.MultiTenancy;
 using Abp.Zero.Configuration;
 using Abp.Zero.SampleApp.MultiTenancy;
@@ -97,7 +98,7 @@ namespace Abp.Zero.SampleApp.Tests.Roles
 
             using (var uow = _unitOfWorkManager.Begin())
             {
-                tenant = new Tenant("Tenant1", "Tenant1");
+                tenant = new Tenant(GuidExtensions.Guid1, "Tenant1", "Tenant1");
                 await _tenantManager.CreateAsync(tenant);
                 await _unitOfWorkManager.Current.SaveChangesAsync();
 

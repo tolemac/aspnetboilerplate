@@ -17,7 +17,7 @@ namespace Abp.Dapper.Filters.Action
             if (entity is IModificationAudited)
             {
                 var record = entity.As<IModificationAudited>();
-                long? userId = GetAuditUserId();
+                var userId = GetAuditUserId();
                 if (userId == null)
                 {
                     record.LastModifierUserId = null;

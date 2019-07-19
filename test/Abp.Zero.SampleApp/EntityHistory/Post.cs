@@ -7,7 +7,7 @@ using Abp.Domain.Entities;
 
 namespace Abp.Zero.SampleApp.EntityHistory
 {
-    public class Post : AuditedEntity<Guid>, ISoftDelete, IMayHaveTenant
+    public class Post : AuditedEntity, ISoftDelete, IMayHaveTenant
     {
         [Required]
         public virtual Blog Blog { get; set; }
@@ -23,7 +23,7 @@ namespace Abp.Zero.SampleApp.EntityHistory
 
         public bool IsDeleted { get; set; }
 
-        public int? TenantId { get; set; }
+        public Guid? TenantId { get; set; }
 
         public Post()
         {

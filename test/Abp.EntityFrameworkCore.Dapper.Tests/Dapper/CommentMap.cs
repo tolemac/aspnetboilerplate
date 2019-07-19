@@ -9,7 +9,7 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests.Dapper
         public CommentMap()
         {
             Table("Comments");
-            Map(x => x.Id).Key(KeyType.Identity);
+            Map(x => x.Id).Key(KeyType.Guid);
             AutoMap();
         }
     }

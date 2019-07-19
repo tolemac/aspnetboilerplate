@@ -50,7 +50,7 @@ namespace Abp.Application.Features
         }
 
         /// <inheritdoc/>
-        public async Task<string> GetValueAsync(int tenantId, string name)
+        public async Task<string> GetValueAsync(Guid tenantId, string name)
         {
             var feature = _featureManager.Get(name);
             var value = await FeatureValueStore.GetValueOrNullAsync(tenantId, feature);
@@ -70,7 +70,7 @@ namespace Abp.Application.Features
         }
 
         /// <inheritdoc/>
-        public async Task<bool> IsEnabledAsync(int tenantId, string featureName)
+        public async Task<bool> IsEnabledAsync(Guid tenantId, string featureName)
         {
             return string.Equals(await GetValueAsync(tenantId, featureName), "true", StringComparison.OrdinalIgnoreCase);
         }

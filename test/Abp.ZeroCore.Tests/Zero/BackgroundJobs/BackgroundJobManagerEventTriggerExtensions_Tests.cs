@@ -35,7 +35,7 @@ namespace Abp.Zero.BackgroundJobs
         public async Task Queue_Event_Should_Return_Id_Of_Background_Job()
         {
             var id = await _backgroundJobManager.EnqueueAsync<TestJob, TestJobArgs>(new TestJobArgs());
-            Convert.ToInt64(id).ShouldBeGreaterThan(0);
+            Guid.Parse(id).ShouldNotBe(default);
         }
 
         public class MySimpleEventData : EventData

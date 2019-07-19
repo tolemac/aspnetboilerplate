@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////////////////
 
 var projectName = "Abp";
-var solution = "./" + projectName + ".sln";
+var solution = "./" + projectName + "-Guid.sln";
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");

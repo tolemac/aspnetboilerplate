@@ -69,7 +69,9 @@ foreach($project in $projects) {
     & dotnet msbuild /t:pack /p:Configuration=Release /p:SourceLinkCreate=true
 
     # Copy nuget package
-    $projectPackPath = Join-Path $projectFolder ("/bin/Release/" + $project + ".*.nupkg")
+    # $projectPackPath = Join-Path $projectFolder ("/bin/Release/" + $project + ".*.nupkg")
+	$nupkgFileName = $project -replace "Abp", "Abp-Guid"
+    $projectPackPath = Join-Path $projectFolder ("/bin/Release/" + $nupkgFileName + ".*.nupkg")
     Move-Item $projectPackPath $packFolder
 
 }

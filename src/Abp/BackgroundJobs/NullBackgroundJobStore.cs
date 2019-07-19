@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace Abp.BackgroundJobs
     /// </summary>
     public class NullBackgroundJobStore : IBackgroundJobStore
     {
-        public Task<BackgroundJobInfo> GetAsync(long jobId)
+        public Task<BackgroundJobInfo> GetAsync(Guid jobId)
         {
             return Task.FromResult(new BackgroundJobInfo());
         }

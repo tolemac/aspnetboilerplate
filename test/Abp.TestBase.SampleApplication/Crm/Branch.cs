@@ -8,7 +8,7 @@ namespace Abp.TestBase.SampleApplication.Crm
     [Table("Branches")]
     public class Branch : Entity, IHasCreationTime
     {
-        public int CompanyId { get; set; }
+        public Guid CompanyId { get; set; }
 
         public string Name { get; set; }
 

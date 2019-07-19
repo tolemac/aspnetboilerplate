@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Abp.Extensions;
 using Abp.ZeroCore.SampleApp.Application.Shop;
 using Shouldly;
 using Xunit;
@@ -72,7 +73,7 @@ namespace Abp.Zero.MultiLingual
 
             product1.Language.ShouldBe("tr");
             product1.Name.ShouldBe("Saat");
-            product1.Id.ShouldBe(1);
+            product1.Id.ShouldBe(GuidExtensions.Guid1);
         }
 
         [Fact]

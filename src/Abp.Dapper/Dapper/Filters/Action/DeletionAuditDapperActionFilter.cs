@@ -26,7 +26,7 @@ namespace Abp.Dapper.Filters.Action
 
             if (entity is IDeletionAudited)
             {
-                long? userId = GetAuditUserId();
+                var userId = GetAuditUserId();
                 var record = entity.As<IDeletionAudited>();
 
                 if (record.DeleterUserId != null)

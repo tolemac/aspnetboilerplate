@@ -3,7 +3,7 @@ using Abp.NHibernate.EntityMappings;
 
 namespace Abp.Zero.NHibernate.EntityMappings
 {
-    public class BackgroundJobInfoMap : EntityMap<BackgroundJobInfo, long>
+    public class BackgroundJobInfoMap : EntityMap<BackgroundJobInfo>
     {
         public BackgroundJobInfoMap()
             : base("AbpBackgroundJobs")

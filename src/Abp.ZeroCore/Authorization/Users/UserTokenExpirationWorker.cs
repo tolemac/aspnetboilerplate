@@ -11,12 +11,12 @@ namespace Abp.Authorization.Users
     {
         private const int IntervalInMilliseconds = 1 * 60 * 60 * 1000; // 1 hour
 
-        private readonly IRepository<UserToken, long> _userTokenRepository;
+        private readonly IRepository<UserToken> _userTokenRepository;
         private readonly IBackgroundJobConfiguration _backgroundJobConfiguration;
 
         public UserTokenExpirationWorker(
             AbpTimer timer,
-            IRepository<UserToken, long> userTokenRepository,
+            IRepository<UserToken> userTokenRepository,
             IBackgroundJobConfiguration backgroundJobConfiguration)
             : base(timer)
         {

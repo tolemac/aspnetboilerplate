@@ -2,11 +2,12 @@
 using Abp.Domain.Repositories;
 using Abp.EntityFramework;
 using Abp.EntityFramework.Repositories;
+using System;
 
 namespace Abp.TestBase.SampleApplication.EntityFramework.Repositories
 {
-    public class SampleApplicationEfRepositoryBase<TEntity> : SampleApplicationEfRepositoryBase<TEntity, int>, IRepository<TEntity>
-        where TEntity : class, IEntity<int>
+    public class SampleApplicationEfRepositoryBase<TEntity> : SampleApplicationEfRepositoryBase<TEntity, Guid>, IRepository<TEntity>
+        where TEntity : class, IEntity
     {
         public SampleApplicationEfRepositoryBase(IDbContextProvider<SampleApplicationDbContext> dbContextProvider)
             : base(dbContextProvider)

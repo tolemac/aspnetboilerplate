@@ -13,7 +13,7 @@ namespace Abp.Notifications
     [Serializable]
     [Table("AbpNotifications")]
     [MultiTenancySide(MultiTenancySides.Host)]
-    public class NotificationInfo : CreationAuditedEntity<Guid>
+    public class NotificationInfo : CreationAuditedEntity
     {
         /// <summary>
         /// Indicates all tenant ids for <see cref="TenantIds"/> property.

@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Abp.ZeroCore.SampleApp.Application;
 using Abp.ZeroCore.SampleApp.Core;
 using Shouldly;
@@ -22,7 +24,7 @@ namespace Abp.Zero.Tenants
         [Fact]
         public async Task Should_Not_Insert_Duplicate_Features()
         {
-            const int tenantId = 1;
+            var tenantId = GuidExtensions.Guid1;
 
             UsingDbContext(tenantId, (context) =>
             {
@@ -54,7 +56,7 @@ namespace Abp.Zero.Tenants
         [Fact]
         public async Task Should_Reset_Tenant_Features()
         {
-            const int tenantId = 1;
+            var tenantId = GuidExtensions.Guid1;
 
             UsingDbContext(tenantId, (context) =>
             {
@@ -84,7 +86,7 @@ namespace Abp.Zero.Tenants
             });
         }
 
-        private async Task ChangeTenantFeatureValueAsync(int tenantId, string name, string value)
+        private async Task ChangeTenantFeatureValueAsync(Guid tenantId, string name, string value)
         {
             using (var uow = _unitOfWorkManager.Begin())
             {

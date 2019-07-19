@@ -8,6 +8,7 @@ using Abp.Domain.Uow;
 using Abp.Events.Bus;
 using Abp.Events.Bus.Entities;
 using Abp.Events.Bus.Handlers;
+using Abp.Extensions;
 using Abp.TestBase.SampleApplication.Messages;
 using Abp.TestBase.SampleApplication.People;
 using Shouldly;
@@ -74,7 +75,7 @@ namespace Abp.TestBase.SampleApplication.Tests.People
 
             using (var uow = Resolve<IUnitOfWorkManager>().Begin(scopeOption))
             {
-                _personRepository.Insert(new Person { ContactListId = 1, Name = "halil" });
+                _personRepository.Insert(new Person { ContactListId = GuidExtensions.Guid1, Name = "halil" });
 
                 changingTriggerCount.ShouldBe(0);
                 creatingTriggerCount.ShouldBe(0);
@@ -121,7 +122,7 @@ namespace Abp.TestBase.SampleApplication.Tests.People
                 {
                     eventData.Entity.Name.ShouldBe("halil");
                     eventData.Entity.CreatorUserId.ShouldNotBeNull();
-                    eventData.Entity.CreatorUserId.ShouldBe(42);
+                    eventData.Entity.CreatorUserId.ShouldBe(GuidExtensions.Guid42);
                     triggerCount++;
                 });
 
@@ -216,7 +217,7 @@ namespace Abp.TestBase.SampleApplication.Tests.People
         [Fact]
         public async Task Should_Insert_A_New_Entity_On_EntityCreating_Event()
         {
-            var person = await _personRepository.InsertAsync(new Person { Name = "Tuana", ContactListId = 1 });
+            var person = await _personRepository.InsertAsync(new Person { Name = "Tuana", ContactListId = GuidExtensions.Guid1 });
             person.IsTransient().ShouldBeFalse();
 
             var text = string.Format("{0} is being created with Id = {1}!", person.Name, person.Id);
@@ -230,7 +231,7 @@ namespace Abp.TestBase.SampleApplication.Tests.People
         [Fact]
         public async Task Should_Insert_A_New_Entity_On_EntityCreated_Event()
         {
-            var person = await _personRepository.InsertAsync(new Person { Name = "Tuana", ContactListId = 1 });
+            var person = await _personRepository.InsertAsync(new Person { Name = "Tuana", ContactListId = GuidExtensions.Guid1 });
             person.IsTransient().ShouldBeFalse();
 
             var text = string.Format("{0} is created with Id = {1}!", person.Name, person.Id);
@@ -243,7 +244,7 @@ namespace Abp.TestBase.SampleApplication.Tests.People
 
         public class PersonHandler : IEventHandler<EntityCreatingEventData<Person>>, IEventHandler<EntityCreatedEventData<Person>>, ITransientDependency
         {
-            public const int FakeTenantId = 65910381;
+            public static readonly Guid FakeTenantId = GuidExtensions.Guid65910381;
 
             private readonly IRepository<Message> _messageRepository;
 

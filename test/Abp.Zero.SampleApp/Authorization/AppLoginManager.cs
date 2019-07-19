@@ -20,7 +20,7 @@ namespace Abp.Zero.SampleApp.Authorization
             IRepository<Tenant> tenantRepository, 
             IUnitOfWorkManager unitOfWorkManager, 
             ISettingManager settingManager, 
-            IRepository<UserLoginAttempt, long> userLoginAttemptRepository, 
+            IRepository<UserLoginAttempt> userLoginAttemptRepository, 
             IUserManagementConfig userManagementConfig, IIocResolver iocResolver, 
             RoleManager roleManager) 
             : base(

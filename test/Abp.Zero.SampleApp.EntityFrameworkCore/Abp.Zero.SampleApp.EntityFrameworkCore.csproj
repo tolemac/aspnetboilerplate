@@ -4,7 +4,7 @@
     <TargetFramework>net461</TargetFramework>
     <AssemblyName>Abp.Zero.SampleApp.EntityFrameworkCore</AssemblyName>
     <OutputType>Library</OutputType>
-    <PackageId>Abp.Zero.SampleApp.EntityFrameworkCore</PackageId>
+    <PackageId>Abp-Guid.Zero.SampleApp.EntityFrameworkCore</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>

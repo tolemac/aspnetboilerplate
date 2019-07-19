@@ -9,7 +9,7 @@ namespace Abp.Dapper.Tests.Mappings
         public PersonMap()
         {
             Table("Person");
-            Map(x => x.Id).Key(KeyType.Identity);
+            Map(x => x.Id).Key(KeyType.Assigned);
             AutoMap();
         }
     }

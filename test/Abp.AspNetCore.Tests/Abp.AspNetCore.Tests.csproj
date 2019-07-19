@@ -4,7 +4,7 @@
     <TargetFrameworks>net461;netcoreapp2.2</TargetFrameworks>
     <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netcoreapp2.2</TargetFrameworks>
     <AssemblyName>Abp.AspNetCore.Tests</AssemblyName>
-    <PackageId>Abp.AspNetCore.Tests</PackageId>
+    <PackageId>Abp-Guid.AspNetCore.Tests</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>

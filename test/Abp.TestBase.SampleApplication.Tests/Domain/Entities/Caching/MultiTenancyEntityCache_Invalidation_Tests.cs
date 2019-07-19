@@ -3,6 +3,7 @@ using Abp.Dependency;
 using Abp.Domain.Entities.Caching;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Abp.Runtime.Caching;
 using Abp.TestBase.SampleApplication.ContactLists;
 using Abp.TestBase.SampleApplication.Messages;
@@ -74,7 +75,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Domain.Entities.Caching
 
             using (var uow = _unitOfWorkManager.Begin())
             {
-                using (_unitOfWorkManager.Current.SetTenantId(1))
+                using (_unitOfWorkManager.Current.SetTenantId(GuidExtensions.Guid1))
                 {
                     message1 = _messageRepository.Single(m => m.Text == "tenant-1-message-1");
 
@@ -93,7 +94,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Domain.Entities.Caching
             MessageCacheItem cachedMessage1;
             using (var uow = _unitOfWorkManager.Begin())
             {
-                using (_unitOfWorkManager.Current.SetTenantId(1))
+                using (_unitOfWorkManager.Current.SetTenantId(GuidExtensions.Guid1))
                 {
                     cachedMessage1 = _messageCache.Get(message1.Id);
                 }
@@ -112,7 +113,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Domain.Entities.Caching
 
             using (var uow = _unitOfWorkManager.Begin())
             {
-                using (_unitOfWorkManager.Current.SetTenantId(1))
+                using (_unitOfWorkManager.Current.SetTenantId(GuidExtensions.Guid1))
                 {
                     message1 = _messageRepository.Single(m => m.Text == "tenant-1-message-1");
 
@@ -127,7 +128,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Domain.Entities.Caching
             MessageCacheItem cachedMessage1;
             using (var uow = _unitOfWorkManager.Begin())
             {
-                using (_unitOfWorkManager.Current.SetTenantId(2))
+                using (_unitOfWorkManager.Current.SetTenantId(GuidExtensions.Guid2))
                 {
                     cachedMessage1 = _messageCache.Get(message1.Id);
                 }
@@ -146,7 +147,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Domain.Entities.Caching
 
             using (var uow = _unitOfWorkManager.Begin())
             {
-                using (_unitOfWorkManager.Current.SetTenantId(1))
+                using (_unitOfWorkManager.Current.SetTenantId(GuidExtensions.Guid1))
                 {
                     contact1 = _contactListRepository.Single(c => c.Name == "List of Tenant-1");
 
@@ -165,7 +166,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Domain.Entities.Caching
             ContactListCacheItem cachedContact1;
             using (var uow = _unitOfWorkManager.Begin())
             {
-                using (_unitOfWorkManager.Current.SetTenantId(1))
+                using (_unitOfWorkManager.Current.SetTenantId(GuidExtensions.Guid1))
                 {
                     cachedContact1 = _contactListCache.Get(contact1.Id);
                 }
@@ -188,7 +189,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Domain.Entities.Caching
 
         public class MessageCache : MayHaveTenantEntityCache<Message, MessageCacheItem>, IMessageCache, ITransientDependency
         {
-            public MessageCache(ICacheManager cacheManager, IUnitOfWorkManager unitOfWorkManager, IRepository<Message, int> repository)
+            public MessageCache(ICacheManager cacheManager, IUnitOfWorkManager unitOfWorkManager, IRepository<Message> repository)
                 : base(cacheManager, unitOfWorkManager, repository)
             {
 
@@ -197,7 +198,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Domain.Entities.Caching
 
         public class ContactListCache : MustHaveTenantEntityCache<ContactList, ContactListCacheItem>, IContactListCache, ITransientDependency
         {
-            public ContactListCache(ICacheManager cacheManager, IUnitOfWorkManager unitOfWorkManager, IRepository<ContactList, int> repository)
+            public ContactListCache(ICacheManager cacheManager, IUnitOfWorkManager unitOfWorkManager, IRepository<ContactList> repository)
                 : base(cacheManager, unitOfWorkManager, repository)
             {
 

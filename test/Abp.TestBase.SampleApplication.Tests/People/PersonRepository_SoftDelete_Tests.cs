@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Abp.TestBase.SampleApplication.People;
 using Shouldly;
 using Xunit;
@@ -74,7 +75,7 @@ namespace Abp.TestBase.SampleApplication.Tests.People
         [Fact]
         public async Task Should_Set_Deletion_Audit_Informations()
         {
-            const long userId = 42;
+            var userId = GuidExtensions.Guid42;
             AbpSession.UserId = userId;
 
             var uowManager = Resolve<IUnitOfWorkManager>();

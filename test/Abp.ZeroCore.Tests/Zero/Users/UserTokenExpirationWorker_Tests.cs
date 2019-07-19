@@ -15,14 +15,14 @@ namespace Abp.Zero.Users
     public class UserTokenExpirationWorker_Tests : AbpZeroTestBase
     {
         private readonly UserTokenExpirationWorker _userTokenExpirationWorker;
-        private readonly IRepository<UserToken, long> _userTokenRepository;
+        private readonly IRepository<UserToken> _userTokenRepository;
         private readonly AbpUserManager<Role, User> _abpUserManager;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         public UserTokenExpirationWorker_Tests()
         {
             _userTokenExpirationWorker = Resolve<MyUserTokenExpirationWorker>();
-            _userTokenRepository = Resolve<IRepository<UserToken, long>>();
+            _userTokenRepository = Resolve<IRepository<UserToken>>();
             _abpUserManager = Resolve<AbpUserManager<Role, User>>();
             _unitOfWorkManager = Resolve<IUnitOfWorkManager>();
         }
@@ -61,7 +61,7 @@ namespace Abp.Zero.Users
     {
         public MyUserTokenExpirationWorker(
             AbpTimer timer, 
-            IRepository<UserToken, long> userTokenRepository, 
+            IRepository<UserToken> userTokenRepository, 
             IBackgroundJobConfiguration backgroundJobConfiguration)
             : base(timer, userTokenRepository, backgroundJobConfiguration)
         {   

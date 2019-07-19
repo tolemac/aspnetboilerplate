@@ -1,7 +1,10 @@
-﻿using Abp.Dependency;
+﻿using Abp.Dapper.TypeHandlers;
+using Abp.Dependency;
 using Abp.Modules;
 using Abp.Orm;
 using Abp.Reflection.Extensions;
+using Dapper;
+using System;
 
 namespace Abp.Dapper
 {
@@ -16,6 +19,9 @@ namespace Abp.Dapper
         public override void Initialize()
         {
             IocManager.RegisterAssemblyByConvention(typeof(AbpDapperModule).GetAssembly());
+
+            // Then you add follow line at where you app beigns to run.
+            SqlMapper.AddTypeHandler<Guid>(new GuidTypeHandler());
 
             using (IScopedIocResolver scope = IocManager.CreateScope())
             {

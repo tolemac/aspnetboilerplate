@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Abp.Configuration.Startup;
 using Abp.Domain.Repositories;
 using Abp.EntityFramework.Repositories;
+using Abp.Extensions;
 using Abp.TestBase.SampleApplication.ContactLists;
 using Shouldly;
 using Xunit;
@@ -27,7 +28,7 @@ namespace Abp.TestBase.SampleApplication.Tests.ContactLists
         [Fact]
         public async Task Ef_Explicit_Load_Should_Work_If_Lazy_Load_Is_Disabled()
         {
-            AbpSession.TenantId = 1;
+            AbpSession.TenantId = GuidExtensions.Guid1;
 
             await WithUnitOfWorkAsync(async () =>
             {
@@ -47,7 +48,7 @@ namespace Abp.TestBase.SampleApplication.Tests.ContactLists
         [Fact]
         public async Task Ef_Explicit_Load_Should_Work_With_No_Effect_If_Lazy_Load_Is_Enabled()
         {
-            AbpSession.TenantId = 1;
+            AbpSession.TenantId = GuidExtensions.Guid1;
 
             await WithUnitOfWorkAsync(async () =>
             {

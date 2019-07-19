@@ -2,6 +2,7 @@
 using System.Linq;
 using Abp.Configuration.Startup;
 using Abp.Domain.Repositories;
+using Abp.Extensions;
 using Abp.TestBase.SampleApplication.Crm;
 using Abp.TestBase.SampleApplication.Messages;
 using Abp.Timing;
@@ -25,8 +26,8 @@ namespace Abp.TestBase.SampleApplication.Tests.Auditing
         public void Should_Write_Audit_Properties()
         {
             //Arrange
-            AbpSession.TenantId = 1;
-            AbpSession.UserId = 2;
+            AbpSession.TenantId = GuidExtensions.Guid1;
+            AbpSession.UserId = GuidExtensions.Guid2;
 
             //Act: Create a new entity
             var createdMessage = _messageRepository.Insert(new Message(AbpSession.TenantId, "test message 1"));
@@ -80,7 +81,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Auditing
 
             //Login as host
             AbpSession.TenantId = null;
-            AbpSession.UserId = 42;
+            AbpSession.UserId = GuidExtensions.Guid42;
 
             //Get a company to modify
             var company = _companyRepository.GetAllList().First();
@@ -91,16 +92,16 @@ namespace Abp.TestBase.SampleApplication.Tests.Auditing
             _companyRepository.Update(company);
 
             //LastModifierUserId should be set
-            company.LastModifierUserId.ShouldBe(42);
+            company.LastModifierUserId.ShouldBe(GuidExtensions.Guid42);
 
             //Login as a tenant
-            AbpSession.TenantId = 1;
-            AbpSession.UserId = 43;
+            AbpSession.TenantId = GuidExtensions.Guid1;
+            AbpSession.UserId = GuidExtensions.Guid43;
 
             //Get the same company to modify
             company = _companyRepository.FirstOrDefault(company.Id);
             company.ShouldNotBeNull();
-            company.LastModifierUserId.ShouldBe(42); //Previous user's id
+            company.LastModifierUserId.ShouldBe(GuidExtensions.Guid42); //Previous user's id
 
             //Modify the company
             company.Name = company.Name + "1";

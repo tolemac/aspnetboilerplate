@@ -1,6 +1,7 @@
 ﻿using System.Transactions;
 using Abp.Configuration.Startup;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Shouldly;
 using Xunit;
 
@@ -25,19 +26,19 @@ namespace Abp.TestBase.SampleApplication.Tests.Uow
             {
                 _unitOfWorkManager.Current.GetTenantId().ShouldBe(null);
 
-                using (_unitOfWorkManager.Current.SetTenantId(1))
+                using (_unitOfWorkManager.Current.SetTenantId(GuidExtensions.Guid1))
                 {
-                    _unitOfWorkManager.Current.GetTenantId().ShouldBe(1);
+                    _unitOfWorkManager.Current.GetTenantId().ShouldBe(GuidExtensions.Guid1);
 
                     using (var nestedUow = _unitOfWorkManager.Begin(TransactionScopeOption.RequiresNew))
                     {
                         AbpSession.TenantId.ShouldBe(null);
-                        _unitOfWorkManager.Current.GetTenantId().ShouldBe(1); //Because nested transaction copies outer uow's filters.
+                        _unitOfWorkManager.Current.GetTenantId().ShouldBe(GuidExtensions.Guid1); //Because nested transaction copies outer uow's filters.
 
                         nestedUow.Complete();
                     }
 
-                    _unitOfWorkManager.Current.GetTenantId().ShouldBe(1);
+                    _unitOfWorkManager.Current.GetTenantId().ShouldBe(GuidExtensions.Guid1);
                 }
 
                 _unitOfWorkManager.Current.GetTenantId().ShouldBe(null);

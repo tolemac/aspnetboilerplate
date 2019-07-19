@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Abp.Extensions;
 using Abp.Zero.SampleApp.MultiTenancy;
 using Shouldly;
 using Xunit;
@@ -17,13 +18,13 @@ namespace Abp.Zero.SampleApp.Tests.MultiTenancy
         [Fact]
         public async Task Should_Not_Create_Duplicate_Tenant()
         {
-            await _tenantManager.CreateAsync(new Tenant("Tenant-X", "Tenant X"));
+            await _tenantManager.CreateAsync(new Tenant(GuidExtensions.Guid1, "Tenant-X", "Tenant X"));
             
             //Trying to re-create with same tenancy name
 
             await Assert.ThrowsAnyAsync<AbpException>(async () =>
             {
-                await _tenantManager.CreateAsync(new Tenant("Tenant-X", "Tenant X"));
+                await _tenantManager.CreateAsync(new Tenant(GuidExtensions.Guid2, "Tenant-X", "Tenant X"));
             });
         }
     }

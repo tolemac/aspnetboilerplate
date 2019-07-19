@@ -1,8 +1,9 @@
 using Abp.Runtime.Caching;
+using System;
 
 namespace Abp.Domain.Entities.Caching
 {
-    public interface IEntityCache<TCacheItem> : IEntityCache<TCacheItem, int>
+    public interface IEntityCache<TCacheItem> : IEntityCache<TCacheItem, Guid>
     {
     }
 

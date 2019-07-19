@@ -6,13 +6,13 @@ using Abp.Domain.Entities;
 
 namespace Abp.ZeroCore.SampleApp.Core.EntityHistory
 {
-    public class Post : AuditedEntity<Guid>, ISoftDelete, IMayHaveTenant
+    public class Post : AuditedEntity, ISoftDelete, IMayHaveTenant
     {
         [Required]
         public Blog Blog { get; set; }
 
         [Audited]
-        public int BlogId { get; set; }
+        public Guid BlogId { get; set; }
 
         public string Title { get; set; }
 
@@ -20,7 +20,7 @@ namespace Abp.ZeroCore.SampleApp.Core.EntityHistory
 
         public bool IsDeleted { get; set; }
 
-        public int? TenantId { get; set; }
+        public Guid? TenantId { get; set; }
 
         public Post()
         {

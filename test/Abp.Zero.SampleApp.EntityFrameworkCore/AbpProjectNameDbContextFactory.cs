@@ -11,7 +11,7 @@ namespace Abp.Zero.SampleApp.EntityFrameworkCore
         {
             var builder = new DbContextOptionsBuilder<AppDbContext>();
 
-            builder.UseSqlServer("Server=localhost; Database=AbpZeroMigrateTest; Trusted_Connection=True;");
+            builder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB; Database=AbpZeroMigrateTest; Trusted_Connection=True;");
 
             return new AppDbContext(builder.Options);
         }

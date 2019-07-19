@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
+using Abp.Extensions;
 using Abp.TestBase.SampleApplication.ContactLists;
 using Abp.TestBase.SampleApplication.Crm;
 using Abp.TestBase.SampleApplication.EntityFramework;
@@ -45,41 +46,45 @@ namespace Abp.TestBase.SampleApplication.Tests
                     context.ContactLists.Add(
                         new ContactList
                         {
-                            TenantId = 1,
+                            Id = GuidExtensions.Guid1,
+                            TenantId = GuidExtensions.Guid1,
                             Name = "List of Tenant-1",
                             People = new List<Person>
                                      {
-                                         new Person {Name = "halil", CreatorUserId = 42 },
-                                         new Person {Name = "emre", IsDeleted = true}
+                                         new Person {Id = GuidExtensions.Guid1, Name = "halil", CreatorUserId = GuidExtensions.Guid42 },
+                                         new Person {Id = GuidExtensions.Guid2, Name = "emre", IsDeleted = true}
                                      }
                         });
 
                     context.ContactLists.Add(
                         new ContactList
                         {
-                            TenantId = 2,
+                            Id = GuidExtensions.Guid2,
+                            TenantId = GuidExtensions.Guid2,
                             Name = "List of Tenant-2",
                             People = new List<Person>
                                      {
-                                         new Person {Name = "asimov"},
+                                         new Person {Id = GuidExtensions.Guid3, Name = "asimov"},
                                      }
                         });
 
                     context.ContactLists.Add(
                         new ContactList
                         {
-                            TenantId = 3,
+                            Id = GuidExtensions.Guid3,
+                            TenantId = GuidExtensions.Guid3,
                             Name = "List-1 of Tenant-3",
                             People = new List<Person>
                                      {
-                                         new Person {Name = "John Doe"},
+                                         new Person {Id = GuidExtensions.Guid4, Name = "John Doe"},
                                      }
                         });
 
                     context.ContactLists.Add(
                         new ContactList
                         {
-                            TenantId = 3,
+                            Id = GuidExtensions.Guid4,
+                            TenantId = GuidExtensions.Guid3,
                             Name = "List-2 of Tenant-3",
                             People = new List<Person>()
                         });
@@ -98,14 +103,14 @@ namespace Abp.TestBase.SampleApplication.Tests
                     context.Messages.Add(
                         new Message
                         {
-                            TenantId = 1,
+                            TenantId = GuidExtensions.Guid1,
                             Text = "tenant-1-message-1"
                         });
 
                     context.Messages.Add(
                         new Message
                         {
-                            TenantId = 1,
+                            TenantId = GuidExtensions.Guid1,
                             Text = "tenant-1-message-2"
                         });
                 });
@@ -114,6 +119,7 @@ namespace Abp.TestBase.SampleApplication.Tests
               context =>
               {
                   AddCompany(context,
+                      GuidExtensions.Guid1,
                       "Volosoft",
                       "Turkey",
                       "Istanbul",
@@ -125,6 +131,7 @@ namespace Abp.TestBase.SampleApplication.Tests
                       "Europe Headquarter");
 
                   AddCompany(context,
+                      GuidExtensions.Guid2,
                       "Microsoft",
                       "USA",
                       "New York",
@@ -137,10 +144,11 @@ namespace Abp.TestBase.SampleApplication.Tests
               });
         }
 
-        private void AddCompany(SampleApplicationDbContext context, string name, string country, string city, string address1, string modifier1, string address2, string modifier2, string branchName1, string branchName2)
+        private void AddCompany(SampleApplicationDbContext context, Guid id, string name, string country, string city, string address1, string modifier1, string address2, string modifier2, string branchName1, string branchName2)
         {
             var company = new Company
             {
+                Id = id,
                 Name = name,
                 CreationTime = new DateTime(2017, 03, 16, 0, 0, 0, DateTimeKind.Utc),
                 BillingAddress = new Address

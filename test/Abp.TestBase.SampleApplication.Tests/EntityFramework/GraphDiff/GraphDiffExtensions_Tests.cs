@@ -2,9 +2,11 @@
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.EntityFramework.GraphDiff.Extensions;
+using Abp.Extensions;
 using Abp.TestBase.SampleApplication.ContactLists;
 using Abp.TestBase.SampleApplication.People;
 using Shouldly;
+using System;
 using Xunit;
 
 namespace Abp.TestBase.SampleApplication.Tests.EntityFramework.GraphDiff
@@ -17,7 +19,7 @@ namespace Abp.TestBase.SampleApplication.Tests.EntityFramework.GraphDiff
         public GraphDiffExtensions_Tests()
         {
             Resolve<IMultiTenancyConfig>().IsEnabled = true;
-            AbpSession.TenantId = 3;
+            AbpSession.TenantId = GuidExtensions.Guid3;
 
             _contactListRepository = Resolve<IRepository<ContactList>>();
             _peopleRepository = Resolve<IRepository<Person>>();
@@ -36,7 +38,7 @@ namespace Abp.TestBase.SampleApplication.Tests.EntityFramework.GraphDiff
                 unitOfWorkManager.Current.SaveChanges();
 
                 davidDoe.Id.ShouldNotBeNull();
-                davidDoe.Id.ShouldNotBe(default(int));
+                davidDoe.Id.ShouldNotBe(default(Guid));
                 davidDoe.ContactListId.ShouldBe(list1.Id); //New entity should be attached with it's navigation property
 
                 unitOfWork.Complete();

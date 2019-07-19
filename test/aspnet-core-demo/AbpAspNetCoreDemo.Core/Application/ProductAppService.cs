@@ -9,6 +9,7 @@ using AbpAspNetCoreDemo.Core.Domain;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.UI;
+using System;
 
 namespace AbpAspNetCoreDemo.Core.Application
 {
@@ -26,7 +27,7 @@ namespace AbpAspNetCoreDemo.Core.Application
             return ObjectMapper.Map<List<ProductDto>>(await _productRepository.GetAllListAsync());
         }
         
-        public int CreateProduct(ProductCreateInput input)
+        public Guid CreateProduct(ProductCreateInput input)
         {
             input.Name = "";
             var product = ObjectMapper.Map<Product>(input);

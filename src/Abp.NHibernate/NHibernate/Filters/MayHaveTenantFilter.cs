@@ -16,7 +16,7 @@ namespace Abp.NHibernate.Filters
         public MayHaveTenantFilter()
         {
             WithName(AbpDataFilters.MayHaveTenant)
-                .AddParameter(AbpDataFilters.Parameters.TenantId, NHibernateUtil.Int32)
+                .AddParameter(AbpDataFilters.Parameters.TenantId, NHibernateUtil.Guid)
                 .WithCondition($"{nameof(IMayHaveTenant.TenantId)} = :{AbpDataFilters.Parameters.TenantId}");
         }
     }

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
+using Abp.Extensions;
 using Abp.TestBase.SampleApplication.Messages;
 using Shouldly;
 using Xunit;
@@ -27,14 +28,16 @@ namespace Abp.TestBase.SampleApplication.Tests.Messages
                     context.Messages.Add(
                         new Message
                         {
-                            TenantId = 1,
+                            Id = GuidExtensions.Guid1,
+                            TenantId = GuidExtensions.Guid1,
                             Text = "tenant-1-message-1"
                         });
 
                     context.Messages.Add(
                         new Message
                         {
-                            TenantId = 1,
+                            Id = GuidExtensions.Guid2,
+                            TenantId = GuidExtensions.Guid1,
                             Text = "tenant-1-message-2"
                         });
                 });
@@ -98,7 +101,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Messages
         [Fact]
         public async Task Should_Get_All_Messages_With_Filtering_Async()
         {
-            AbpSession.UserId = 42;
+            AbpSession.UserId = GuidExtensions.Guid42;
 
             //Act
 
@@ -115,7 +118,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Messages
         {
             //Act
 
-            var message = _messageAppService.Get(new EntityDto(2));
+            var message = _messageAppService.Get(new EntityDto(GuidExtensions.Guid2));
 
             //Assert
 
@@ -134,7 +137,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Messages
 
             //Act
 
-            _messageAppService.Delete(new EntityDto(2));
+            _messageAppService.Delete(new EntityDto(GuidExtensions.Guid2));
 
             //Assert
 
@@ -151,12 +154,12 @@ namespace Abp.TestBase.SampleApplication.Tests.Messages
 
             UsingDbContext(context =>
             {
-                context.Messages.Single(m => m.Id == 2).Text.ShouldBe("tenant-1-message-2");
+                context.Messages.Single(m => m.Id == GuidExtensions.Guid2).Text.ShouldBe("tenant-1-message-2");
             });
 
             //Act
 
-            var message = _messageAppService.Get(new EntityDto(2));
+            var message = _messageAppService.Get(new EntityDto(GuidExtensions.Guid2));
             message.Text = "tenant-1-message-2-updated";
             var updatedMessage = _messageAppService.Update(message);
 
@@ -166,7 +169,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Messages
 
             UsingDbContext(context =>
             {
-                context.Messages.Single(m => m.Id == 2).Text.ShouldBe("tenant-1-message-2-updated");
+                context.Messages.Single(m => m.Id == GuidExtensions.Guid2).Text.ShouldBe("tenant-1-message-2-updated");
             });
         }
 
@@ -184,7 +187,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Messages
 
             //Assert
 
-            createdMessage.Id.ShouldBeGreaterThan(0);
+            createdMessage.Id.ShouldNotBe(default);
             createdMessage.Text.ShouldBe(messageText);
 
             UsingDbContext(context =>

@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Entities;
+using System;
 
 namespace Abp.ZeroCore.SampleApp.Core.Shop
 {
@@ -8,7 +9,7 @@ namespace Abp.ZeroCore.SampleApp.Core.Shop
 
         public virtual Product Core { get; set; }
 
-        public virtual int CoreId { get; set; }
+        public virtual Guid CoreId { get; set; }
 
         public virtual string Language { get; set; }
     }

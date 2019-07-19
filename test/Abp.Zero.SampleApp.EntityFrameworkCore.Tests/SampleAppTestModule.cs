@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Abp.Domain.Uow;
@@ -17,7 +18,7 @@ namespace Abp.Zero.SampleApp.EntityFrameworkCore.Tests
     public class SampleAppTestModule : AbpModule
     {
         private DbContextOptions<AppDbContext> _hostDbContextOptions;
-        private Dictionary<int, DbContextOptions<AppDbContext>> _tenantDbContextOptions;
+        private Dictionary<Guid, DbContextOptions<AppDbContext>> _tenantDbContextOptions;
         public override void PreInitialize()
         {
             Configuration.UnitOfWork.IsTransactional = false; //EF Core InMemory DB does not support transactions.
@@ -44,7 +45,7 @@ namespace Abp.Zero.SampleApp.EntityFrameworkCore.Tests
             hostDbContextOptionsBuilder.UseInMemoryDatabase().UseInternalServiceProvider(serviceProvider);
 
             _hostDbContextOptions = hostDbContextOptionsBuilder.Options;
-            _tenantDbContextOptions = new Dictionary<int, DbContextOptions<AppDbContext>>();
+            _tenantDbContextOptions = new Dictionary<Guid, DbContextOptions<AppDbContext>>();
 
             IocManager.IocContainer.Register(
                 Component

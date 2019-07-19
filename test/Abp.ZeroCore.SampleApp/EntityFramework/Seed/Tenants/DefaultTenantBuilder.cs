@@ -24,7 +24,7 @@ namespace Abp.ZeroCore.SampleApp.EntityFramework.Seed.Tenants
             var defaultTenant = _context.Tenants.FirstOrDefault(t => t.TenancyName == Tenant.DefaultTenantName);
             if (defaultTenant == null)
             {
-                defaultTenant = new Tenant(Tenant.DefaultTenantName, Tenant.DefaultTenantName);
+                defaultTenant = new Tenant(Tenant.DefaultTenantId, Tenant.DefaultTenantName, Tenant.DefaultTenantName);
 
                 var defaultEdition = _context.Editions.FirstOrDefault(e => e.Name == EditionManager.DefaultEditionName);
                 if (defaultEdition != null)

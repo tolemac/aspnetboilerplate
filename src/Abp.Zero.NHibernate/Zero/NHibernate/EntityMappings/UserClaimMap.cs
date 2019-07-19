@@ -3,7 +3,7 @@ using Abp.NHibernate.EntityMappings;
 
 namespace Abp.Zero.NHibernate.EntityMappings
 {
-    public class UserClaimMap : EntityMap<UserClaim, long>
+    public class UserClaimMap : EntityMap<UserClaim>
     {
         public UserClaimMap()
             : base("AbpUserClaims")

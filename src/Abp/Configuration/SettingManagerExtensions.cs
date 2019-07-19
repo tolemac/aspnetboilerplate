@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp.Extensions;
 using Abp.Threading;
@@ -43,7 +44,7 @@ namespace Abp.Configuration
         /// <param name="name">Unique name of the setting</param>
         /// <param name="tenantId">Tenant id</param>
         /// <returns>Current value of the setting</returns>
-        public static async Task<T> GetSettingValueForTenantAsync<T>(this ISettingManager settingManager, string name, int tenantId)
+        public static async Task<T> GetSettingValueForTenantAsync<T>(this ISettingManager settingManager, string name, Guid tenantId)
            where T : struct
         {
             return (await settingManager.GetSettingValueForTenantAsync(name, tenantId)).To<T>();
@@ -58,7 +59,7 @@ namespace Abp.Configuration
         /// <param name="tenantId">Tenant id</param>
         /// <param name="userId">User id</param>
         /// <returns>Current value of the setting for the user</returns>
-        public static async Task<T> GetSettingValueForUserAsync<T>(this ISettingManager settingManager, string name, int? tenantId, long userId)
+        public static async Task<T> GetSettingValueForUserAsync<T>(this ISettingManager settingManager, string name, Guid? tenantId, Guid userId)
            where T : struct
         {
             return (await settingManager.GetSettingValueForUserAsync(name, tenantId, userId)).To<T>();
@@ -109,7 +110,7 @@ namespace Abp.Configuration
         /// <param name="name">Unique name of the setting</param>
         /// <param name="tenantId">Tenant id</param>
         /// <returns>Current value of the setting</returns>
-        public static string GetSettingValueForTenant(this ISettingManager settingManager, string name, int tenantId)
+        public static string GetSettingValueForTenant(this ISettingManager settingManager, string name, Guid tenantId)
         {
             return AsyncHelper.RunSync(() => settingManager.GetSettingValueForTenantAsync(name, tenantId));
         }
@@ -123,7 +124,7 @@ namespace Abp.Configuration
         /// <param name="tenantId">Tenant id</param>
         /// <param name="userId">User id</param>
         /// <returns>Current value of the setting for the user</returns>
-        public static string GetSettingValueForUser(this ISettingManager settingManager, string name, int? tenantId, long userId)
+        public static string GetSettingValueForUser(this ISettingManager settingManager, string name, Guid? tenantId, Guid userId)
         {
             return AsyncHelper.RunSync(() => settingManager.GetSettingValueForUserAsync(name, tenantId, userId));
         }
@@ -138,7 +139,7 @@ namespace Abp.Configuration
         /// <param name="userId">User id</param>
         /// <param name="fallbackToDefault"></param>
         /// <returns>Current value of the setting for the user</returns>
-        public static string GetSettingValueForUser(this ISettingManager settingManager, string name, int? tenantId, long userId, bool fallbackToDefault)
+        public static string GetSettingValueForUser(this ISettingManager settingManager, string name, Guid? tenantId, Guid userId, bool fallbackToDefault)
         {
             return AsyncHelper.RunSync(() => settingManager.GetSettingValueForUserAsync(name, tenantId, userId, fallbackToDefault));
         }
@@ -178,7 +179,7 @@ namespace Abp.Configuration
         /// <param name="name">Unique name of the setting</param>
         /// <param name="tenantId">Tenant id</param>
         /// <returns>Current value of the setting</returns>
-        public static T GetSettingValueForTenant<T>(this ISettingManager settingManager, string name, int tenantId)
+        public static T GetSettingValueForTenant<T>(this ISettingManager settingManager, string name, Guid tenantId)
             where T : struct
         {
             return AsyncHelper.RunSync(() => settingManager.GetSettingValueForTenantAsync<T>(name, tenantId));
@@ -194,7 +195,7 @@ namespace Abp.Configuration
         /// <param name="tenantId">Tenant id</param>
         /// <param name="userId">User id</param>
         /// <returns>Current value of the setting for the user</returns>
-        public static T GetSettingValueForUser<T>(this ISettingManager settingManager, string name, int? tenantId, long userId)
+        public static T GetSettingValueForUser<T>(this ISettingManager settingManager, string name, Guid? tenantId, Guid userId)
             where T : struct
         {
             return AsyncHelper.RunSync(() => settingManager.GetSettingValueForUserAsync<T>(name, tenantId, userId));
@@ -248,7 +249,7 @@ namespace Abp.Configuration
         /// <param name="settingManager">Setting manager</param>
         /// <param name="tenantId">Tenant to get settings</param>
         /// <returns>List of setting values</returns>
-        public static IReadOnlyList<ISettingValue> GetAllSettingValuesForTenant(this ISettingManager settingManager, int tenantId)
+        public static IReadOnlyList<ISettingValue> GetAllSettingValuesForTenant(this ISettingManager settingManager, Guid tenantId)
         {
             return AsyncHelper.RunSync(() => settingManager.GetAllSettingValuesForTenantAsync(tenantId));
         }
@@ -285,7 +286,7 @@ namespace Abp.Configuration
         /// <param name="tenantId">TenantId</param>
         /// <param name="name">Unique name of the setting</param>
         /// <param name="value">Value of the setting</param>
-        public static void ChangeSettingForTenant(this ISettingManager settingManager, int tenantId, string name, string value)
+        public static void ChangeSettingForTenant(this ISettingManager settingManager, Guid tenantId, string name, string value)
         {
             AsyncHelper.RunSync(() => settingManager.ChangeSettingForTenantAsync(tenantId, name, value));
         }

@@ -5,7 +5,7 @@ using Abp.Domain.Entities.Auditing;
 
 namespace Abp.EntityFrameworkCore.Dapper.Tests.Domain
 {
-    public class Post : AuditedEntity<Guid>
+    public class Post : AuditedEntity
     {
         public Post()
         {
@@ -18,7 +18,7 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests.Domain
             Body = body;
         }
 
-        public Post(int blogId, string title, string body)
+        public Post(Guid blogId, string title, string body)
         {
             BlogId = blogId;
             Title = title;
@@ -32,7 +32,7 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests.Domain
 
         public int CommentId { get; set; }
 
-        public int BlogId { get; set; }
+        public Guid BlogId { get; set; }
 
         public string Title { get; set; }
 

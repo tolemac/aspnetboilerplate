@@ -55,9 +55,9 @@ namespace Abp.NHibernate.Interceptors
         public override bool OnSave(object entity, object id, object[] state, string[] propertyNames, IType[] types)
         {
             //Set Id for Guids
-            if (entity is IEntity<Guid>)
+            if (entity is IEntity)
             {
-                var guidEntity = entity as IEntity<Guid>;
+                var guidEntity = entity as IEntity;
                 if (guidEntity.IsTransient())
                 {
                     guidEntity.Id = _guidGenerator.Value.Create();

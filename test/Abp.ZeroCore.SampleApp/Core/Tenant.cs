@@ -1,4 +1,5 @@
 ﻿using Abp.MultiTenancy;
+using System;
 
 namespace Abp.ZeroCore.SampleApp.Core
 {
@@ -9,8 +10,8 @@ namespace Abp.ZeroCore.SampleApp.Core
 
         }
 
-        public Tenant(string tenancyName, string name)
-            : base(tenancyName, name)
+        public Tenant(Guid id, string tenancyName, string name)
+            : base(id, tenancyName, name)
         {
         }
     }

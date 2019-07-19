@@ -5,7 +5,7 @@ using Abp.EntityFrameworkCore.Repositories;
 
 namespace Abp.EntityFrameworkCore.Dapper.Tests.Ef
 {
-    public class PostRepository : EfCoreRepositoryBase<BloggingDbContext, Post, Guid>, IPostRepository
+    public class PostRepository : EfCoreRepositoryBase<BloggingDbContext, Post>, IPostRepository
     {
         public PostRepository(IDbContextProvider<BloggingDbContext> dbContextProvider)
             : base(dbContextProvider)

@@ -17,8 +17,8 @@ namespace Abp.Zero.SampleApp.Roles
             IRoleManagementConfig roleManagementConfig,
             ICacheManager cacheManager,
             IUnitOfWorkManager unitOfWorkManager,
-            IRepository<OrganizationUnit, long> organizationUnitRepository,
-            IRepository<OrganizationUnitRole, long> organizationUnitRoleRepository)
+            IRepository<OrganizationUnit> organizationUnitRepository,
+            IRepository<OrganizationUnitRole> organizationUnitRoleRepository)
             : base(
             store,
             permissionManager,

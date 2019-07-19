@@ -8,7 +8,7 @@ namespace Abp.Zero.AspNetCore
 {
     internal static class AbpZeroClaimsIdentityHelper
     {
-        public static int? GetTenantId(IIdentity identity)
+        public static Guid? GetTenantId(IIdentity identity)
         {
             if (identity == null)
             {
@@ -23,7 +23,7 @@ namespace Abp.Zero.AspNetCore
                 return null;
             }
 
-            return Convert.ToInt32(tenantIdOrNull);
+            return Guid.Parse(tenantIdOrNull);
         }
     }
 }

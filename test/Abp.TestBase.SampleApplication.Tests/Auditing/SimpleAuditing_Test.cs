@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
 using Abp.Auditing;
+using Abp.Extensions;
 using Abp.TestBase.SampleApplication.Crm;
 using Abp.TestBase.SampleApplication.People;
 using Abp.TestBase.SampleApplication.People.Dto;
@@ -42,7 +43,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Auditing
         {
             /* All application service methods are audited as conventional. */
 
-            await _personAppService.CreatePersonAsync(new CreatePersonInput { ContactListId = 1, Name = "john" });
+            await _personAppService.CreatePersonAsync(new CreatePersonInput { ContactListId = GuidExtensions.Guid1, Name = "john" });
 
 #pragma warning disable 4014
             _auditingStore.Received().SaveAsync(Arg.Any<AuditInfo>());
@@ -83,7 +84,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Auditing
         [Fact]
         public void Should_Write_Audits_For_AsyncCrudAppService_With_Correct_Service_Name()
         {
-            _asyncCompanyAppService.Delete(new EntityDto(1));
+            _asyncCompanyAppService.Delete(new EntityDto(GuidExtensions.Guid1));
             _auditingStore.Received().SaveAsync(Arg.Is<AuditInfo>(a => a.ServiceName.Contains("AsyncCompanyAppService")));
         }
 

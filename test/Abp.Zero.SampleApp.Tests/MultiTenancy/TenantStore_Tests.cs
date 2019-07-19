@@ -1,4 +1,5 @@
-﻿using Abp.MultiTenancy;
+﻿using Abp.Extensions;
+using Abp.MultiTenancy;
 using Abp.Zero.SampleApp.MultiTenancy;
 using Shouldly;
 using Xunit;
@@ -19,7 +20,7 @@ namespace Abp.Zero.SampleApp.Tests.MultiTenancy
         public void Should_Get_Tenant_By_Id()
         {
             //Act
-            var tenant = _tenantStore.Find(1);
+            var tenant = _tenantStore.Find(GuidExtensions.Guid1);
 
             //Assert
             Assert.NotNull(tenant);
@@ -34,7 +35,7 @@ namespace Abp.Zero.SampleApp.Tests.MultiTenancy
 
             //Assert
             Assert.NotNull(tenant);
-            tenant.Id.ShouldBe(1);
+            tenant.Id.ShouldBe(GuidExtensions.Guid1);
         }
 
         [Fact]

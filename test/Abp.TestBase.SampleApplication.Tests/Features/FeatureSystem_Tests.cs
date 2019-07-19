@@ -38,8 +38,8 @@ namespace Abp.TestBase.SampleApplication.Tests.Features
         public virtual void Should_Get_Feature_Values()
         {
             var featureValueStore = Substitute.For<IFeatureValueStore>();
-            featureValueStore.GetValueOrNullAsync(1, _featureManager.Get(SampleFeatureProvider.Names.Contacts)).Returns(Task.FromResult("true"));
-            featureValueStore.GetValueOrNullAsync(1, _featureManager.Get(SampleFeatureProvider.Names.MaxContactCount)).Returns(Task.FromResult("20"));
+            featureValueStore.GetValueOrNullAsync(GuidExtensions.Guid1, _featureManager.Get(SampleFeatureProvider.Names.Contacts)).Returns(Task.FromResult("true"));
+            featureValueStore.GetValueOrNullAsync(GuidExtensions.Guid1, _featureManager.Get(SampleFeatureProvider.Names.MaxContactCount)).Returns(Task.FromResult("20"));
 
             LocalIocManager.IocContainer.Register(
                 Component.For<IFeatureValueStore>().Instance(featureValueStore).LifestyleSingleton()
@@ -55,7 +55,7 @@ namespace Abp.TestBase.SampleApplication.Tests.Features
         public void Should_Call_Method_With_Feature_If_Enabled()
         {
             var featureValueStore = Substitute.For<IFeatureValueStore>();
-            featureValueStore.GetValueOrNullAsync(1, _featureManager.Get(SampleFeatureProvider.Names.Contacts)).Returns(Task.FromResult("true"));
+            featureValueStore.GetValueOrNullAsync(GuidExtensions.Guid1, _featureManager.Get(SampleFeatureProvider.Names.Contacts)).Returns(Task.FromResult("true"));
 
             LocalIocManager.IocContainer.Register(
                 Component.For<IFeatureValueStore>().Instance(featureValueStore).LifestyleSingleton()
@@ -69,8 +69,8 @@ namespace Abp.TestBase.SampleApplication.Tests.Features
         public void Should_Not_Call_Method_With_Feature_If_Not_Enabled()
         {
             var featureValueStore = Substitute.For<IFeatureValueStore>();
-            featureValueStore.GetValueOrNullAsync(1, _featureManager.Get(SampleFeatureProvider.Names.Contacts)).Returns(Task.FromResult("false"));
-            featureValueStore.GetValueOrNullAsync(1, _featureManager.Get(SampleFeatureProvider.Names.MaxContactCount)).Returns(Task.FromResult("20"));
+            featureValueStore.GetValueOrNullAsync(GuidExtensions.Guid1, _featureManager.Get(SampleFeatureProvider.Names.Contacts)).Returns(Task.FromResult("false"));
+            featureValueStore.GetValueOrNullAsync(GuidExtensions.Guid1, _featureManager.Get(SampleFeatureProvider.Names.MaxContactCount)).Returns(Task.FromResult("20"));
 
             LocalIocManager.IocContainer.Register(
                 Component.For<IFeatureValueStore>().Instance(featureValueStore).LifestyleSingleton()

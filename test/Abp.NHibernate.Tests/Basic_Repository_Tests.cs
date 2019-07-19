@@ -2,6 +2,7 @@
 using Abp.Domain.Uow;
 using Abp.Events.Bus;
 using Abp.Events.Bus.Entities;
+using Abp.Extensions;
 using Abp.NHibernate.Tests.Entities;
 using Shouldly;
 using System.Linq;
@@ -21,15 +22,15 @@ namespace Abp.NHibernate.Tests
             _booksRepository = Resolve<IRepository<Book>>();
             _unitOfWorkManager = Resolve<IUnitOfWorkManager>();
 
-            UsingSession(session => session.Save(new Person() { Name = "emre" }));
-            UsingSession(session => session.Save(new Book { Name = "Hitchhikers Guide to the Galaxy" }));
-            UsingSession(session => session.Save(new Book { Name = "My First ABCs", IsDeleted = true }));
+            UsingSession(session => session.Save(new Person() { Id = GuidExtensions.Guid1, Name = "emre" }));
+            UsingSession(session => session.Save(new Book { Id = GuidExtensions.Guid1, Name = "Hitchhikers Guide to the Galaxy" }));
+            UsingSession(session => session.Save(new Book { Id = GuidExtensions.Guid2, Name = "My First ABCs", IsDeleted = true }));
         }
 
         [Fact]
         public void Should_Insert_People()
         {
-            _personRepository.Insert(new Person() { Name = "halil" });
+            _personRepository.Insert(new Person() { Id = GuidExtensions.Guid2, Name = "halil" });
 
             var insertedPerson = UsingSession(session => session.Query<Person>().FirstOrDefault(p => p.Name == "halil"));
             insertedPerson.ShouldNotBe(null);

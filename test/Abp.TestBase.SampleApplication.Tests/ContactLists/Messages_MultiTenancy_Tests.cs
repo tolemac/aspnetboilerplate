@@ -3,6 +3,7 @@ using System.Linq;
 using Abp.Configuration.Startup;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Abp.TestBase.SampleApplication.Messages;
 using Abp.TestBase.SampleApplication.Tests.People;
 using Abp.Timing;
@@ -30,7 +31,7 @@ namespace Abp.TestBase.SampleApplication.Tests.ContactLists
         public void EntityAuditProperty_Tests_Cross_Tenant_User()
         {
             AbpSession.TenantId = null;
-            AbpSession.UserId = 999;
+            AbpSession.UserId = GuidExtensions.Guid999;
 
             Message tenant1MessageNew;
 
@@ -44,9 +45,9 @@ namespace Abp.TestBase.SampleApplication.Tests.ContactLists
                 //Should start UOW with TenantId in the session
                 unitOfWorkManager.Current.GetTenantId().ShouldBeNull();
 
-                using (unitOfWorkManager.Current.SetTenantId(1))
+                using (unitOfWorkManager.Current.SetTenantId(GuidExtensions.Guid1))
                 {
-                    unitOfWorkManager.Current.GetTenantId().ShouldBe(1);
+                    unitOfWorkManager.Current.GetTenantId().ShouldBe(GuidExtensions.Guid1);
 
                     tenant1Message1 = _messageRepository.FirstOrDefault(m => m.Text == "tenant-1-message-1");
                     tenant1Message1.ShouldNotBeNull(); //Can get tenant's data from host since we used SetTenantId()
@@ -58,7 +59,7 @@ namespace Abp.TestBase.SampleApplication.Tests.ContactLists
                     var tenant1Message2 = _messageRepository.Single(m => m.Text == "tenant-1-message-2");
                     _messageRepository.Delete(tenant1Message2);
 
-                    tenant1MessageNew = _messageRepository.Insert(new Message(1, "tenant-1-message-new"));
+                    tenant1MessageNew = _messageRepository.Insert(new Message(GuidExtensions.Guid1, "tenant-1-message-new"));
                 }
 
                 unitOfWork.Complete();
@@ -87,8 +88,8 @@ namespace Abp.TestBase.SampleApplication.Tests.ContactLists
         [Fact]
         public void EntityAuditProperty_Tests_Same_Tenant_User()
         {
-            AbpSession.TenantId = 1;
-            AbpSession.UserId = 999;
+            AbpSession.TenantId = GuidExtensions.Guid1;
+            AbpSession.UserId = GuidExtensions.Guid999;
 
             Message tenant1MessageNew;
 
@@ -100,7 +101,7 @@ namespace Abp.TestBase.SampleApplication.Tests.ContactLists
             using (var unitOfWork = unitOfWorkManager.Begin())
             {
                 //Should start UOW with TenantId in the session
-                unitOfWorkManager.Current.GetTenantId().ShouldBe(1);
+                unitOfWorkManager.Current.GetTenantId().ShouldBe(GuidExtensions.Guid1);
 
                 tenant1Message1 = _messageRepository.FirstOrDefault(m => m.Text == "tenant-1-message-1");
                 tenant1Message1.ShouldNotBeNull();
@@ -112,7 +113,7 @@ namespace Abp.TestBase.SampleApplication.Tests.ContactLists
                 var tenant1Message2 = _messageRepository.Single(m => m.Text == "tenant-1-message-2");
                 _messageRepository.Delete(tenant1Message2);
 
-                tenant1MessageNew = _messageRepository.Insert(new Message(1, "tenant-1-message-new"));
+                tenant1MessageNew = _messageRepository.Insert(new Message(GuidExtensions.Guid1, "tenant-1-message-new"));
 
                 unitOfWork.Complete();
             }
@@ -120,11 +121,11 @@ namespace Abp.TestBase.SampleApplication.Tests.ContactLists
             //Creation audit check
             tenant1MessageNew.IsTransient().ShouldBeFalse(); //It should be saved to database
             tenant1MessageNew.CreationTime.ShouldBeGreaterThan(Clock.Now.Subtract(TimeSpan.FromMinutes(1)));
-            tenant1MessageNew.CreatorUserId.ShouldBe(999); //It set since user in the AbpSession is tenant's user!
+            tenant1MessageNew.CreatorUserId.ShouldBe(GuidExtensions.Guid999); //It set since user in the AbpSession is tenant's user!
 
             //Modification audit check
             tenant1Message1.LastModificationTime.ShouldNotBeNull(); //It's set since we modified Text
-            tenant1Message1.LastModifierUserId.ShouldBe(999); //It set since user in the AbpSession is tenant's user!
+            tenant1Message1.LastModifierUserId.ShouldBe(GuidExtensions.Guid999); //It set since user in the AbpSession is tenant's user!
 
             //Deletion audit check
             UsingDbContext(context =>
@@ -133,22 +134,22 @@ namespace Abp.TestBase.SampleApplication.Tests.ContactLists
                 tenant1Message2.ShouldNotBeNull();
                 tenant1Message2.IsDeleted.ShouldBeTrue();
                 tenant1Message2.DeletionTime.ShouldNotBeNull();
-                tenant1Message2.DeleterUserId.ShouldBe(999); //It set since user in the AbpSession is tenant's user!
+                tenant1Message2.DeleterUserId.ShouldBe(GuidExtensions.Guid999); //It set since user in the AbpSession is tenant's user!
             });
         }
 
         [Fact]
         public void MayHaveTenant_Filter_Tests()
         {
-            AbpSession.UserId = 1;
+            AbpSession.UserId = GuidExtensions.Guid1;
 
             //A tenant can reach its own data
-            AbpSession.TenantId = 1;
+            AbpSession.TenantId = GuidExtensions.Guid1;
             _messageRepository.Count().ShouldBe(2);
             _messageRepository.GetAllList().Any(m => m.TenantId != AbpSession.TenantId).ShouldBe(false);
 
             //Tenant 999999 has no data
-            AbpSession.TenantId = 999999;
+            AbpSession.TenantId = GuidExtensions.Guid999999;
             _messageRepository.Count().ShouldBe(0);
 
             //Host can reach its own data (since MayHaveTenant filter is enabled by default)
@@ -162,13 +163,13 @@ namespace Abp.TestBase.SampleApplication.Tests.ContactLists
                 unitOfWorkManager.Current.GetTenantId().ShouldBe(null);
 
                 //We can also set tenantId parameter's value without changing AbpSession.TenantId
-                using (unitOfWorkManager.Current.SetTenantId(1))
+                using (unitOfWorkManager.Current.SetTenantId(GuidExtensions.Guid1))
                 {
-                    unitOfWorkManager.Current.GetTenantId().ShouldBe(1);
+                    unitOfWorkManager.Current.GetTenantId().ShouldBe(GuidExtensions.Guid1);
 
                     //We should only get tenant 1's entities since we set tenantId to 1
                     _messageRepository.Count().ShouldBe(2);
-                    _messageRepository.GetAllList().Any(m => m.TenantId != 1).ShouldBe(false);
+                    _messageRepository.GetAllList().Any(m => m.TenantId != GuidExtensions.Guid1).ShouldBe(false);
                 }
 
                 unitOfWorkManager.Current.GetTenantId().ShouldBe(null);

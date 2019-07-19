@@ -19,7 +19,7 @@ namespace Abp.Zero.SampleApp.NHibernate.TestDatas
 
         private void CreateTenants()
         {
-            _session.Save(new Tenant(Tenant.DefaultTenantName, Tenant.DefaultTenantName));
+            _session.Save(new Tenant(Tenant.DefaultTenantId, Tenant.DefaultTenantName, Tenant.DefaultTenantName));
         }
     }
 }

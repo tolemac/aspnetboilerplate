@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.DataProtection;
 
 namespace Abp.Zero.AspNetCore
 {
-    public class DataProtectorUserTokenProvider<TUser> : IUserTokenProvider<TUser, long>
-        where TUser : class, IUser<long>
+    public class DataProtectorUserTokenProvider<TUser> : IUserTokenProvider<TUser, Guid>
+        where TUser : class, IUser<Guid>
     {
         public IDataProtector Protector { get; }
 
@@ -26,7 +26,7 @@ namespace Abp.Zero.AspNetCore
             TokenLifespan = TimeSpan.FromDays(1.0);
         }
 
-        public async Task<string> GenerateAsync(string purpose, UserManager<TUser, long> manager, TUser user)
+        public async Task<string> GenerateAsync(string purpose, UserManager<TUser, Guid> manager, TUser user)
         {
             if (user == null)
             {
@@ -55,17 +55,17 @@ namespace Abp.Zero.AspNetCore
             }
         }
 
-        public Task<bool> IsValidProviderForUserAsync(UserManager<TUser, long> manager, TUser user)
+        public Task<bool> IsValidProviderForUserAsync(UserManager<TUser, Guid> manager, TUser user)
         {
             return Task.FromResult(true);
         }
 
-        public Task NotifyAsync(string token, UserManager<TUser, long> manager, TUser user)
+        public Task NotifyAsync(string token, UserManager<TUser, Guid> manager, TUser user)
         {
             return Task.FromResult(0);
         }
 
-        public async Task<bool> ValidateAsync(string purpose, string token, UserManager<TUser, long> manager, TUser user)
+        public async Task<bool> ValidateAsync(string purpose, string token, UserManager<TUser, Guid> manager, TUser user)
         {
             try
             {

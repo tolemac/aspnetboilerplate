@@ -23,7 +23,7 @@ namespace Abp.Zero.SampleApp.Tests.EntityHistory
     public class SimpleEntityHistory_Test : SampleAppTestBase
     {
         private readonly IRepository<Blog> _blogRepository;
-        private readonly IRepository<Post, Guid> _postRepository;
+        private readonly IRepository<Post> _postRepository;
         private readonly IRepository<Comment> _commentRepository;
 
         private IEntityHistoryStore _entityHistoryStore;
@@ -31,7 +31,7 @@ namespace Abp.Zero.SampleApp.Tests.EntityHistory
         public SimpleEntityHistory_Test()
         {
             _blogRepository = Resolve<IRepository<Blog>>();
-            _postRepository = Resolve<IRepository<Post, Guid>>();
+            _postRepository = Resolve<IRepository<Post>>();
             _commentRepository = Resolve<IRepository<Comment>>();
 
             Resolve<IEntityHistoryConfiguration>().IsEnabledForAnonymousUsers = true;
@@ -181,7 +181,7 @@ namespace Abp.Zero.SampleApp.Tests.EntityHistory
         {
             /* Blog has Audited attribute. */
 
-            int blog1Id;
+            Guid blog1Id;
             var newValue = new BlogEx { BloggerName = "blogger-2" };
             BlogEx originalValue;
 
@@ -229,7 +229,7 @@ namespace Abp.Zero.SampleApp.Tests.EntityHistory
 
             using (var uow = Resolve<IUnitOfWorkManager>().Begin())
             {
-                var blog2 = _blogRepository.Single(b => b.Id == 2);
+                var blog2 = _blogRepository.Single(b => b.Id == blogId);
                 var post1 = _postRepository.Single(p => p.Body == "test-post-1-body");
                 post1Id = post1.Id;
 
@@ -409,9 +409,9 @@ namespace Abp.Zero.SampleApp.Tests.EntityHistory
 
         #endregion
 
-        private int CreateBlogAndGetId()
+        private Guid CreateBlogAndGetId()
         {
-            int blog2Id;
+            Guid blog2Id;
 
             using (var uow = Resolve<IUnitOfWorkManager>().Begin())
             {

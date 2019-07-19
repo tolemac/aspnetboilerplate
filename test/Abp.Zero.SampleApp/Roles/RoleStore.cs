@@ -9,8 +9,8 @@ namespace Abp.Zero.SampleApp.Roles
     {
         public RoleStore(
             IRepository<Role> roleRepository,
-            IRepository<UserRole, long> userRoleRepository,
-            IRepository<RolePermissionSetting, long> rolePermissionSettingRepository)
+            IRepository<UserRole> userRoleRepository,
+            IRepository<RolePermissionSetting> rolePermissionSettingRepository)
             : base(
                 roleRepository,
                 userRoleRepository,

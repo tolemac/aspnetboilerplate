@@ -2,6 +2,7 @@
 using Abp.Domain.Repositories;
 using Abp.EntityFrameworkCore;
 using Abp.EntityFrameworkCore.Repositories;
+using System;
 
 namespace Abp.Zero.SampleApp.EntityFrameworkCore
 {
@@ -14,8 +15,8 @@ namespace Abp.Zero.SampleApp.EntityFrameworkCore
         }
     }
 
-    public class AppEfRepositoryBase<TEntity> : AppEfRepositoryBase<TEntity, int>, IRepository<TEntity>
-        where TEntity : class, IEntity<int>
+    public class AppEfRepositoryBase<TEntity> : AppEfRepositoryBase<TEntity, Guid>, IRepository<TEntity>
+        where TEntity : class, IEntity
     {
         public AppEfRepositoryBase(IDbContextProvider<AppDbContext> dbContextProvider)
             : base(dbContextProvider)

@@ -69,7 +69,7 @@ namespace Abp.Notifications
         /// <param name="tenantId">Tenant id. Null for the host.</param>
         /// <param name="notificationName">Name of the notification.</param>
         /// <param name="entityIdentifier">entity identifier</param>
-        public static List<NotificationSubscription> GetSubscriptions(this INotificationSubscriptionManager notificationSubscriptionManager, int? tenantId, string notificationName, EntityIdentifier entityIdentifier = null)
+        public static List<NotificationSubscription> GetSubscriptions(this INotificationSubscriptionManager notificationSubscriptionManager, Guid? tenantId, string notificationName, EntityIdentifier entityIdentifier = null)
         {
             return AsyncHelper.RunSync(() => notificationSubscriptionManager.GetSubscriptionsAsync(tenantId, notificationName, entityIdentifier));
         }
@@ -148,7 +148,7 @@ namespace Abp.Notifications
         /// <param name="userNotificationManager">User notificaiton manager</param>
         /// <param name="tenantId">Tenant Id</param>
         /// <param name="userNotificationId">The user notification id.</param>
-        public static UserNotification GetUserNotification(this IUserNotificationManager userNotificationManager, int? tenantId, Guid userNotificationId)
+        public static UserNotification GetUserNotification(this IUserNotificationManager userNotificationManager, Guid? tenantId, Guid userNotificationId)
         {
             return AsyncHelper.RunSync(() => userNotificationManager.GetUserNotificationAsync(tenantId, userNotificationId));
         }
@@ -160,7 +160,7 @@ namespace Abp.Notifications
         /// <param name="tenantId">Tenant Id</param>
         /// <param name="userNotificationId">The user notification id.</param>
         /// <param name="state">New state.</param>
-        public static void UpdateUserNotificationState(this IUserNotificationManager userNotificationManager, int? tenantId, Guid userNotificationId, UserNotificationState state)
+        public static void UpdateUserNotificationState(this IUserNotificationManager userNotificationManager, Guid? tenantId, Guid userNotificationId, UserNotificationState state)
         {
             AsyncHelper.RunSync(() => userNotificationManager.UpdateUserNotificationStateAsync(tenantId, userNotificationId, state));
         }
@@ -182,7 +182,7 @@ namespace Abp.Notifications
         /// <param name="userNotificationManager">User notificaiton manager</param>
         /// <param name="tenantId">Tenant Id</param>
         /// <param name="userNotificationId">The user notification id.</param>
-        public static void DeleteUserNotification(this IUserNotificationManager userNotificationManager, int? tenantId, Guid userNotificationId)
+        public static void DeleteUserNotification(this IUserNotificationManager userNotificationManager, Guid? tenantId, Guid userNotificationId)
         {
             AsyncHelper.RunSync(() => userNotificationManager.DeleteUserNotificationAsync(tenantId, userNotificationId));
         }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Abp.Application.Editions;
 using Abp.Authorization.Users;
 using Abp.Domain.Entities;
@@ -16,7 +17,7 @@ namespace Abp.MultiTenancy
         /// Current <see cref="Edition"/> of the Tenant.
         /// </summary>
         public virtual Edition Edition { get; set; }
-        public virtual int? EditionId { get; set; }
+        public virtual Guid? EditionId { get; set; }
 
         /// <summary>
         /// Reference to the creator user of this entity.
@@ -44,11 +45,13 @@ namespace Abp.MultiTenancy
         /// <summary>
         /// Creates a new tenant.
         /// </summary>
+        /// <param name="id">Guid for tenant</param>
         /// <param name="tenancyName">UNIQUE name of this Tenant</param>
         /// <param name="name">Display name of the Tenant</param>
-        protected AbpTenant(string tenancyName, string name)
+        protected AbpTenant(Guid id, string tenancyName, string name)
             : this()
         {
+            Id = id;
             TenancyName = tenancyName;
             Name = name;
         }

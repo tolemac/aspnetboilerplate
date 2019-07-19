@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.Common;
 using System.Data.SQLite;
-
+using Abp.Extensions;
 using Abp.TestBase;
 
 using Castle.MicroKernel.Registration;
@@ -16,8 +16,8 @@ namespace Abp.Dapper.NHibernate.Tests
 
         protected DapperNhBasedApplicationTestBase()
         {
-            AbpSession.UserId = 1;
-            AbpSession.TenantId = 1;
+            AbpSession.UserId = GuidExtensions.Guid1;
+            AbpSession.TenantId = GuidExtensions.Guid1;
         }
 
         protected override void PreInitialize()

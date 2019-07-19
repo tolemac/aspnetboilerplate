@@ -7,7 +7,7 @@ using Abp.Dapper.Repositories;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.EntityFrameworkCore.Dapper.Tests.Domain;
-
+using Abp.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 using Shouldly;
@@ -20,8 +20,8 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests.Tests
     {
         private readonly IDapperRepository<Blog> _blogDapperRepository;
         private readonly IRepository<Blog> _blogRepository;
-        private readonly IDapperRepository<Post, Guid> _postDapperRepository;
-        private readonly IRepository<Post, Guid> _postRepository;
+        private readonly IDapperRepository<Post> _postDapperRepository;
+        private readonly IRepository<Post> _postRepository;
         private readonly IRepository<Comment, long> _commentRepository;
         private readonly IDapperRepository<Comment, long> _commentDapperRepository;
         private readonly IUnitOfWorkManager _uowManager;
@@ -30,9 +30,9 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests.Tests
         {
             _uowManager = Resolve<IUnitOfWorkManager>();
             _blogRepository = Resolve<IRepository<Blog>>();
-            _postRepository = Resolve<IRepository<Post, Guid>>();
+            _postRepository = Resolve<IRepository<Post>>();
             _blogDapperRepository = Resolve<IDapperRepository<Blog>>();
-            _postDapperRepository = Resolve<IDapperRepository<Post, Guid>>();
+            _postDapperRepository = Resolve<IDapperRepository<Post>>();
             _commentRepository = Resolve<IRepository<Comment, long>>();
             _commentDapperRepository = Resolve<IDapperRepository<Comment, long>>();
         }
@@ -52,8 +52,8 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests.Tests
         [Fact]
         public async Task Should_Automatically_Save_Changes_On_Uow()
         {
-            int blog1Id;
-            int blog2Id;
+            Guid blog1Id;
+            Guid blog2Id;
 
             //Act
 
@@ -91,7 +91,7 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests.Tests
         [Fact]
         public async Task Should_automatically_save_changes_on_uow_completed_with_dapper()
         {
-            int blog1Id;
+            Guid blog1Id;
 
             //Act
             using (IUnitOfWorkCompleteHandle uow = _uowManager.Begin())
@@ -174,7 +174,7 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests.Tests
         {
             using (IUnitOfWorkCompleteHandle uow = _uowManager.Begin())
             {
-                Blog blog1 = await _blogRepository.GetAsync(1);
+                Blog blog1 = await _blogRepository.GetAsync(GuidExtensions.Guid1);
                 var post = new Post(blog1, "a test title", "a test body");
                 post.IsTransient().ShouldBeTrue();
                 await _postRepository.InsertAsync(post);
@@ -188,7 +188,7 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests.Tests
         {
             using (IUnitOfWorkCompleteHandle uow = _uowManager.Begin())
             {
-                Blog blog1 = await _blogRepository.GetAsync(1);
+                Blog blog1 = await _blogRepository.GetAsync(GuidExtensions.Guid1);
                 var post = new Post(blog1.Id, "a test title", "a test body");
                 post.IsTransient().ShouldBeTrue();
                 await _postDapperRepository.InsertAsync(post);
@@ -202,7 +202,7 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests.Tests
         {
             using (IUnitOfWorkCompleteHandle uow = Resolve<IUnitOfWorkManager>().Begin())
             {
-                int blogId = _blogDapperRepository.InsertAndGetId(new Blog("Oguzhan_Same_Uow", "www"));
+                Guid blogId = _blogDapperRepository.InsertAndGetId(new Blog("Oguzhan_Same_Uow", "www"));
 
                 Blog blog = _blogRepository.Get(blogId);
 
@@ -215,7 +215,7 @@ namespace Abp.EntityFrameworkCore.Dapper.Tests.Tests
         [Fact]
         public async Task execute_method_for_void_sqls_should_work()
         {
-            int blogId = _blogDapperRepository.InsertAndGetId(new Blog("Oguzhan_Blog", "wwww.aspnetboilerplate.com"));
+            Guid blogId = _blogDapperRepository.InsertAndGetId(new Blog("Oguzhan_Blog", "wwww.aspnetboilerplate.com"));
 
             await _blogDapperRepository.ExecuteAsync("Update Blogs Set Name = @name where Id =@id", new { id = blogId, name = "Oguzhan_New_Blog" });
 

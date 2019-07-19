@@ -3,7 +3,7 @@ using Abp.NHibernate.EntityMappings;
 
 namespace Abp.Zero.SampleApp.NHibernate.Mappings
 {
-    public class UserAccountMap : EntityMap<UserAccount, long>
+    public class UserAccountMap : EntityMap<UserAccount>
     {
         /// <summary>
         /// Constructor

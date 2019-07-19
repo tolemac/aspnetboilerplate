@@ -4,6 +4,7 @@ using Abp.Authorization;
 using Abp.Authorization.Users;
 using Abp.Configuration.Startup;
 using Abp.Domain.Uow;
+using Abp.Extensions;
 using Abp.Organizations;
 using Abp.ZeroCore.SampleApp.Application;
 using Abp.ZeroCore.SampleApp.Core;
@@ -34,7 +35,7 @@ namespace Abp.Zero.Users
         {
             Resolve<IMultiTenancyConfig>().IsEnabled = true;
 
-            var defaultTenantId = 1;
+            var defaultTenantId = GuidExtensions.Guid1;
             var user = UsingDbContext(defaultTenantId, (context) =>
             {
                 return context.Users.Single(f => f.TenantId == defaultTenantId && f.UserName == AbpUserBase.AdminUserName);
@@ -64,7 +65,7 @@ namespace Abp.Zero.Users
             Resolve<IMultiTenancyConfig>().IsEnabled = true;
 
             // Arrange
-            var defaultTenantId = 1;
+            var defaultTenantId = GuidExtensions.Guid1;
             var organizationUnit = UsingDbContext(defaultTenantId, (context) =>
             {
                 return context.OrganizationUnits.Single(ou => ou.TenantId == defaultTenantId && ou.DisplayName == "OU1");
